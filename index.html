@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Semester River</title>
+  <style>
+    :root {
+      --paper: #f5f1e8;
+      --ink: #202928;
+      --muted: #65716d;
+      --grid: rgba(39, 48, 45, 0.16);
+      --bank: #d8cfbd;
+      --water: #8dbdc1;
+      --calm: rgba(70, 188, 181, 0.36);
+      --duck-yellow: #ffd84d;
+      --duck-white: #fffdf2;
+      --duck-lime: #d9ff57;
+      --duck-cyan: #9eeaff;
+    }
+
+    * {
+      box-sizing: border-box;
+      border-radius: 0 !important;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr minmax(280px, 430px);
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.1rem, 5vw, 4.6rem);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .subhead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .panel {
+      border: 1px solid var(--grid);
+      background: rgba(255, 253, 247, 0.66);
+      padding: 12px;
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    .panel p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.38;
+    }
+
+    .difficulty-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .difficulty-control {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .difficulty-control label {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    input,
+    select,
+    button {
+      min-height: 34px;
+      border: 1px solid rgba(32, 41, 40, 0.24);
+      background: #fffdf7;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #405f5f;
+    }
+
+    .calm-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 8px;
+    }
+
+    .date-form {
+      display: grid;
+      grid-template-columns: minmax(180px, 260px) 1fr;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 14px;
+    }
+
+    .date-form label,
+    .syllabus-panel label {
+      display: grid;
+      gap: 5px;
+      color: #3f4c49;
+      font-size: 0.84rem;
+      font-weight: 750;
+    }
+
+    .syllabus-panel {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      border: 1px solid rgba(32, 41, 40, 0.24);
+      background: #fffdf7;
+      color: var(--ink);
+      font: inherit;
+      padding: 10px;
+    }
+
+    button {
+      padding: 0 12px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .map-shell {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(32, 41, 40, 0.22);
+      background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.04), transparent 15%, transparent 85%, rgba(0, 0, 0, 0.04)),
+        #ece5d6;
+      box-shadow: inset 0 0 42px rgba(32, 41, 40, 0.16);
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .week-bg {
+      fill: transparent;
+      stroke: rgba(32, 41, 40, 0.12);
+      stroke-width: 1;
+    }
+
+    .bank-shard {
+      fill: var(--bank);
+      stroke: rgba(94, 77, 52, 0.38);
+      stroke-width: 2;
+      stroke-linejoin: miter;
+    }
+
+    .water-shard {
+      fill: url(#waterGradient);
+      stroke: rgba(16, 42, 46, 0.25);
+      stroke-width: 1.5;
+      stroke-linejoin: miter;
+    }
+
+    .dry-line {
+      stroke: rgba(91, 74, 50, 0.34);
+      stroke-width: 3;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+
+    .week-label {
+      fill: #45514e;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .week-date-label {
+      fill: #68736f;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .today-marker {
+      stroke: #ff7a00;
+      stroke-width: 7;
+      stroke-linecap: butt;
+      filter: drop-shadow(0 0 3px rgba(255, 122, 0, 0.55));
+    }
+
+    .today-label {
+      fill: #b14e00;
+      font-size: 13px;
+      font-weight: 900;
+      paint-order: stroke;
+      stroke: rgba(245, 241, 232, 0.9);
+      stroke-width: 4px;
+      stroke-linejoin: miter;
+    }
+
+    .texture-low {
+      stroke: rgba(245, 255, 252, 0.72);
+      stroke-width: 1.5;
+      stroke-linecap: butt;
+    }
+
+    .texture-medium {
+      stroke: rgba(42, 94, 101, 0.58);
+      stroke-width: 4;
+      stroke-linecap: butt;
+      fill: none;
+    }
+
+    .texture-high {
+      stroke: rgba(16, 18, 18, 0.86);
+      stroke-width: 3.4;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+
+    .calm-water {
+      fill: var(--calm);
+      stroke: rgba(231, 255, 251, 0.72);
+      stroke-width: 1;
+    }
+
+    .duck {
+      cursor: pointer;
+    }
+
+    .duck.poofing {
+      animation: poof 720ms ease-out both;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    @keyframes poof {
+      0% {
+        opacity: 1;
+      }
+      28% {
+        opacity: 0.42;
+        transform: scale(1.2);
+      }
+      48% {
+        opacity: 1;
+      }
+      68% {
+        opacity: 0.62;
+      }
+      100% {
+        opacity: 1;
+        transform: scale(0.6);
+      }
+    }
+
+    .duck-body {
+      stroke: rgba(25, 28, 26, 0.36);
+      stroke-width: 2;
+      stroke-linejoin: miter;
+    }
+
+    .duck-wing {
+      fill: rgba(255, 255, 255, 0.28);
+    }
+
+    .duck-eye {
+      fill: #111;
+    }
+
+    .duck-label {
+      fill: #1f2927;
+      font-size: 13px;
+      font-weight: 800;
+      text-anchor: middle;
+      paint-order: stroke;
+      stroke: rgba(245, 241, 232, 0.86);
+      stroke-width: 5px;
+      stroke-linejoin: miter;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 12px;
+      color: #47524f;
+      font-size: 0.88rem;
+      font-weight: 750;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border: 1px solid rgba(32, 41, 40, 0.25);
+    }
+
+    .status {
+      min-height: 28px;
+      margin-top: 10px;
+      color: #40504c;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .modal {
+      position: fixed;
+      inset: auto auto 24px 24px;
+      z-index: 10;
+      display: none;
+      width: min(380px, calc(100vw - 48px));
+      border: 1px solid rgba(32, 41, 40, 0.24);
+      background: #fffdf7;
+      padding: 14px;
+      box-shadow: 0 16px 42px rgba(32, 41, 40, 0.22);
+    }
+
+    .modal.is-open {
+      display: block;
+    }
+
+    .modal h2 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+
+    .modal p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.35;
+    }
+
+    .task-row {
+      display: grid;
+      grid-template-columns: 1fr 96px;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: end;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 780px) {
+      header,
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .difficulty-grid,
+      .calm-form {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .date-form {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Semester River</h1>
+      <p class="subhead">A static 2D map of the semester. Weeks are angular shards. Current texture shows cognitive intensity. Ducks mark assignments and sub-tasks.</p>
+    </header>
+
+    <section class="controls">
+      <div class="panel">
+        <h2>Current Difficulty</h2>
+        <p>Low difficulty uses sparse vertical lines. Medium difficulty uses steady wave lines. High difficulty uses dense black-and-white noise.</p>
+        <div id="difficulty-grid" class="difficulty-grid"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Calm Waters</h2>
+        <p>Calm Waters are flat teal blocks with no internal pattern.</p>
+        <form id="calm-form" class="calm-form">
+          <select id="calm-week" aria-label="Week"></select>
+          <select id="calm-duration" aria-label="Duration">
+            <option value="2">2 hours</option>
+            <option value="3" selected>3 hours</option>
+            <option value="4">4 hours</option>
+          </select>
+          <select id="calm-side" aria-label="Placement">
+            <option value="center">Center</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+          </select>
+          <button type="submit">Add Calm Water</button>
+        </form>
+        <div id="status" class="status">Schedule ready.</div>
+      </div>
+    </section>
+
+    <section class="panel date-form" aria-label="Semester dates">
+      <label>
+        Semester Start (Monday)
+        <input id="semester-start" type="date" value="2026-01-12">
+      </label>
+      <p>Week shard labels and the Today marker are calculated from this date.</p>
+    </section>
+
+    <section class="panel syllabus-panel" aria-label="Syllabus paste parser">
+      <label>
+        Syllabus Paste Box
+        <textarea id="syllabus-text" placeholder="Paste syllabus text here. Example: Pharmacology Final Exam due Apr 24 40%"></textarea>
+      </label>
+      <button id="parse-syllabus" type="button">Find assignments and place ducks</button>
+    </section>
+
+    <section class="map-shell" aria-label="Geometric semester river map">
+      <svg id="map" viewBox="0 0 1120 1860" role="img" aria-labelledby="title desc">
+        <title id="title">Geometric semester river map</title>
+        <desc id="desc">Sixteen angular river shards with assignment ducks placed by week.</desc>
+      </svg>
+    </section>
+
+    <div class="legend">
+      <span><i class="swatch" style="background: var(--duck-yellow)"></i>Clinicals</span>
+      <span><i class="swatch" style="background: var(--duck-white)"></i>Theory</span>
+      <span><i class="swatch" style="background: var(--duck-lime)"></i>Pharmacology</span>
+      <span><i class="swatch" style="background: var(--duck-cyan)"></i>Skills Lab</span>
+    </div>
+  </main>
+
+  <aside id="duck-modal" class="modal" aria-live="polite">
+    <h2>Get your ducks in a row</h2>
+    <p id="modal-text">Place ducklings in earlier weeks.</p>
+    <div id="task-list"></div>
+    <div class="modal-actions">
+      <button id="cancel-ducks" type="button">Cancel</button>
+      <button id="place-ducks" type="button">Place ducklings</button>
+    </div>
+  </aside>
+
+  <script>
+    const NS = "http://www.w3.org/2000/svg";
+    const svg = document.querySelector("#map");
+    const difficultyGrid = document.querySelector("#difficulty-grid");
+    const calmForm = document.querySelector("#calm-form");
+    const calmWeek = document.querySelector("#calm-week");
+    const calmDuration = document.querySelector("#calm-duration");
+    const calmSide = document.querySelector("#calm-side");
+    const semesterStartInput = document.querySelector("#semester-start");
+    const syllabusText = document.querySelector("#syllabus-text");
+    const parseSyllabus = document.querySelector("#parse-syllabus");
+    const statusBox = document.querySelector("#status");
+    const modal = document.querySelector("#duck-modal");
+    const modalText = document.querySelector("#modal-text");
+    const taskList = document.querySelector("#task-list");
+    const cancelDucks = document.querySelector("#cancel-ducks");
+    const placeDucks = document.querySelector("#place-ducks");
+
+    const topY = 92;
+    const weekH = 104;
+    const weeks = 16;
+
+    const subjects = {
+      Clinicals: { color: "#ffd84d", difficulty: 6 },
+      Theory: { color: "#fffdf2", difficulty: 8 },
+      Pharmacology: { color: "#d9ff57", difficulty: 9 },
+      "Skills Lab": { color: "#9eeaff", difficulty: 3 }
+    };
+
+    const assignments = [
+      { id: "care-plan", name: "Care Plan", week: 3, weight: 12, subject: "Clinicals" },
+      { id: "theory-midterm", name: "Theory Midterm", week: 6, weight: 25, subject: "Theory" },
+      { id: "med-calc", name: "Med Calc Exam", week: 8, weight: 18, subject: "Pharmacology" },
+      { id: "skills-check", name: "Skills Check", week: 10, weight: 8, subject: "Skills Lab" },
+      { id: "final-exam", name: "Final Exam", week: 15, weight: 40, subject: "Theory" },
+      { id: "pharm-final", name: "Pharm Final", week: 16, weight: 35, subject: "Pharmacology" }
+    ];
+
+    const state = {
+      calmWaters: [{ id: "calm-1", week: 14, duration: 3, side: "center" }],
+      ducklings: [],
+      selectedDuck: null
+    };
+    const pendingPoofs = new Set();
+
+    const centerX = [560, 514, 606, 642, 498, 438, 530, 590, 468, 430, 548, 638, 584, 506, 650, 590];
+    const leftWidth = [118, 86, 152, 104, 168, 74, 132, 92, 188, 108, 82, 156, 116, 176, 94, 138];
+    const rightWidth = [82, 168, 94, 178, 76, 154, 106, 188, 92, 164, 142, 84, 176, 98, 160, 112];
+    const skew = [-36, 42, -18, 58, -64, 22, -48, 35, -28, 62, -54, 18, -14, 46, -68, 30];
+
+    function el(name, attrs = {}, parent = svg) {
+      const node = document.createElementNS(NS, name);
+      Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
+      parent.appendChild(node);
+      return node;
+    }
+
+    function subjectKeys() {
+      return Object.keys(subjects);
+    }
+
+    function weekTop(week) {
+      return topY + (week - 1) * weekH;
+    }
+
+    function localDateFromInput(value) {
+      const [year, month, day] = value.split("-").map(Number);
+      return new Date(year, month - 1, day, 12, 0, 0);
+    }
+
+    function addDays(date, days) {
+      const copy = new Date(date);
+      copy.setDate(copy.getDate() + days);
+      return copy;
+    }
+
+    function formatDate(date) {
+      return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    }
+
+    function semesterStartDate() {
+      return localDateFromInput(semesterStartInput.value);
+    }
+
+    function weekRangeLabel(week) {
+      const start = addDays(semesterStartDate(), (week - 1) * 7);
+      const end = addDays(start, 6);
+      return `${formatDate(start)} - ${formatDate(end)}`;
+    }
+
+    function weekFromDate(date) {
+      const start = semesterStartDate();
+      const days = Math.floor((date - start) / 86400000);
+      return Math.min(weeks, Math.max(1, Math.floor(days / 7) + 1));
+    }
+
+    function datePosition(date) {
+      const start = semesterStartDate();
+      const days = (date - start) / 86400000;
+      const clamped = Math.min(weeks * 7 - 0.01, Math.max(0, days));
+      const week = Math.floor(clamped / 7) + 1;
+      const withinWeek = clamped - (week - 1) * 7;
+      const y = weekTop(week) + (withinWeek / 7) * weekH;
+      return { week, y };
+    }
+
+    function shardPoints(week, expand = 0) {
+      const i = week - 1;
+      const y0 = weekTop(week);
+      const y1 = y0 + weekH;
+      const cx0 = centerX[i];
+      const cx1 = centerX[Math.min(i + 1, centerX.length - 1)] + skew[i] * 0.35;
+      return [
+        [cx0 - leftWidth[i] - expand, y0],
+        [cx0 + rightWidth[i] + expand, y0 + Math.max(-18, skew[i] * 0.18)],
+        [cx1 + rightWidth[Math.min(i + 1, 15)] + expand, y1],
+        [cx1 - leftWidth[Math.min(i + 1, 15)] - expand, y1 + Math.min(20, skew[i] * -0.15)]
+      ];
+    }
+
+    function pointsToString(points) {
+      return points.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+    }
+
+    function centerOf(points) {
+      return {
+        x: points.reduce((sum, point) => sum + point[0], 0) / points.length,
+        y: points.reduce((sum, point) => sum + point[1], 0) / points.length
+      };
+    }
+
+    function duckScale(item) {
+      if (item.isDuckling) return 0.92;
+      const weight = item.weight;
+      const base = weight >= 25 ? 1.8 : weight >= 15 ? 1.35 : 0.78;
+      if (pendingPoofs.has(item.id)) return base;
+      return item.aligned ? base * 0.6 : base;
+    }
+
+    function duckColor(item) {
+      if (item.color) return item.color;
+      return subjects[item.subject].color;
+    }
+
+    function isMamaDuck(item) {
+      return item.weight >= 16;
+    }
+
+    function textureTier(week) {
+      const relevant = [...assignments, ...state.ducklings].filter(item => item.week === week);
+      const maxDifficulty = relevant.reduce((max, item) => Math.max(max, subjects[item.subject].difficulty), 1);
+      if (maxDifficulty >= 8) return "high";
+      if (maxDifficulty >= 4) return "medium";
+      return "low";
+    }
+
+    function addDefs() {
+      const defs = el("defs");
+      defs.innerHTML = `
+        <linearGradient id="waterGradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#0b2c42"/>
+          <stop offset="50%" stop-color="#4aa4a9" stop-opacity="0.88"/>
+          <stop offset="100%" stop-color="#092538"/>
+        </linearGradient>
+      `;
+    }
+
+    function drawWeekTextures(week, points, tier) {
+      const clipId = `clip-week-${week}`;
+      const clip = el("clipPath", { id: clipId });
+      el("polygon", { points: pointsToString(points) }, clip);
+      const c = centerOf(points);
+      const minX = Math.min(...points.map(p => p[0]));
+      const maxX = Math.max(...points.map(p => p[0]));
+      const minY = Math.min(...points.map(p => p[1]));
+      const maxY = Math.max(...points.map(p => p[1]));
+
+      if (state.calmWaters.some(block => block.week === week)) {
+        state.calmWaters.filter(block => block.week === week).forEach(block => {
+          const width = block.side === "center" ? 190 : 132;
+          const x = block.side === "left" ? minX + 24 : block.side === "right" ? maxX - width - 24 : c.x - width / 2;
+          el("rect", {
+            class: "calm-water",
+            x,
+            y: minY + 34,
+            width,
+            height: 30 + block.duration * 5,
+            "clip-path": `url(#${clipId})`
+          });
+        });
+      }
+
+      if (tier === "low") {
+        for (let x = minX + 38; x <= maxX - 20; x += 46) {
+          el("line", {
+            class: "texture-low",
+            x1: x,
+            y1: minY + 8,
+            x2: x,
+            y2: maxY - 8,
+            "clip-path": `url(#${clipId})`
+          });
+        }
+      } else if (tier === "medium") {
+        for (let x = minX + 24; x <= maxX - 20; x += 34) {
+          const d = `M ${x} ${minY + 4} C ${x + 18} ${minY + 30}, ${x - 18} ${minY + 62}, ${x + 4} ${maxY - 4}`;
+          el("path", { class: "texture-medium", d, "clip-path": `url(#${clipId})` });
+        }
+      } else {
+        for (let y = minY + 6; y <= maxY - 4; y += 8) {
+          const d = [];
+          for (let x = minX + 8; x <= maxX - 8; x += 16) {
+            const yy = y + ((Math.floor((x - minX) / 16) % 2 === 0) ? -7 : 7);
+            d.push(`${d.length ? "L" : "M"} ${x.toFixed(1)} ${yy.toFixed(1)}`);
+          }
+          el("path", { class: "texture-high", d: d.join(" "), "clip-path": `url(#${clipId})` });
+        }
+        for (let y = minY + 11; y <= maxY - 6; y += 12) {
+          el("line", {
+            class: "texture-low",
+            x1: minX + 12,
+            y1: y,
+            x2: maxX - 12,
+            y2: y,
+            opacity: 0.72,
+            "clip-path": `url(#${clipId})`
+          });
+        }
+      }
+    }
+
+    function drawDuck(item, index, slot = 0, total = 1) {
+      const weekPoints = shardPoints(item.week, 0);
+      const c = centerOf(weekPoints);
+      const spread = Math.min(260, Math.max(0, (total - 1) * 54));
+      const x = c.x - spread / 2 + slot * 54;
+      let y = c.y + ((index % 2) * 18 - 9);
+      if (item.aligned && !item.isDuckling) {
+        y = weekTop(item.week) + weekH - 26;
+      }
+      const scale = duckScale(item);
+      const color = duckColor(item);
+      const group = el("g", {
+        class: `duck ${pendingPoofs.has(item.id) ? "poofing" : ""}`,
+        transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${scale})`,
+        tabindex: isMamaDuck(item) && !item.isDuckling ? "0" : "-1",
+        role: isMamaDuck(item) && !item.isDuckling ? "button" : "img",
+        "aria-label": `${item.name}, ${item.subject}, week ${item.week}`
+      });
+      if (pendingPoofs.has(item.id)) {
+        group.addEventListener("animationend", () => {
+          pendingPoofs.delete(item.id);
+          drawMap();
+        }, { once: true });
+      }
+
+      el("path", {
+        class: "duck-body",
+        fill: color,
+        d: "M -28 8 L -16 -12 L 12 -14 L 32 0 L 24 18 L -12 22 Z"
+      }, group);
+      el("path", {
+        class: "duck-body",
+        fill: color,
+        d: "M 12 -16 L 22 -30 L 40 -24 L 38 -8 L 26 -4 Z"
+      }, group);
+      el("path", {
+        class: "duck-body",
+        fill: "#d8973c",
+        d: "M 38 -21 L 54 -17 L 38 -11 Z"
+      }, group);
+      el("polygon", {
+        class: "duck-wing",
+        points: "-10,-4 10,0 0,12 -18,12"
+      }, group);
+      el("circle", { class: "duck-eye", cx: 30, cy: -21, r: 2.2 }, group);
+
+      el("text", {
+        class: "duck-label",
+        x: 0,
+        y: 44
+      }, group).textContent = item.isDuckling ? item.name : `${item.name} ${item.weight}%`;
+
+      if (isMamaDuck(item) && !item.isDuckling) {
+        group.addEventListener("click", () => openDuckModal(item));
+        group.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openDuckModal(item);
+          }
+        });
+      }
+    }
+
+    function drawMap() {
+      svg.innerHTML = "";
+      addDefs();
+      for (let week = 1; week <= weeks; week += 1) {
+        const bgY = weekTop(week);
+        el("rect", { class: "week-bg", x: 28, y: bgY, width: 1064, height: weekH });
+        el("text", { class: "week-label", x: 48, y: bgY + 32 }).textContent = `Week ${week}`;
+        el("text", { class: "week-date-label", x: 48, y: bgY + 51 }).textContent = weekRangeLabel(week);
+
+        const bankPoints = shardPoints(week, 28);
+        const waterPoints = shardPoints(week, 0);
+        el("polygon", { class: "bank-shard", points: pointsToString(bankPoints) });
+        el("polygon", { class: "water-shard", points: pointsToString(waterPoints) });
+        drawWeekTextures(week, waterPoints, textureTier(week));
+
+        if (week > 1) {
+          const seam = shardPoints(week, 8).slice(0, 2);
+          el("path", {
+            class: "dry-line",
+            d: `M ${seam[0][0].toFixed(1)} ${seam[0][1].toFixed(1)} L ${((seam[0][0] + seam[1][0]) / 2 + skew[week - 1] * 0.3).toFixed(1)} ${(seam[0][1] + 12).toFixed(1)} L ${seam[1][0].toFixed(1)} ${seam[1][1].toFixed(1)}`
+          });
+        }
+      }
+
+      drawTodayMarker();
+      const allDucks = [...assignments, ...state.ducklings];
+      for (let week = 1; week <= weeks; week += 1) {
+        const inWeek = allDucks.filter(item => item.week === week);
+        inWeek.forEach((item, index) => drawDuck(item, index, index, inWeek.length));
+      }
+    }
+
+    function drawTodayMarker() {
+      const now = new Date();
+      const start = semesterStartDate();
+      const end = addDays(start, weeks * 7);
+      if (now < start || now > end) return;
+      const pos = datePosition(now);
+      const points = shardPoints(pos.week, 4);
+      const minX = Math.min(...points.map(point => point[0]));
+      const maxX = Math.max(...points.map(point => point[0]));
+      el("line", {
+        class: "today-marker",
+        x1: minX,
+        y1: pos.y,
+        x2: maxX,
+        y2: pos.y
+      });
+      el("text", {
+        class: "today-label",
+        x: maxX + 12,
+        y: pos.y + 5
+      }).textContent = "Today";
+    }
+
+    function renderDifficultyControls() {
+      difficultyGrid.innerHTML = "";
+      subjectKeys().forEach(subject => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "difficulty-control";
+        wrapper.innerHTML = `
+          <label><span>${subject}</span><output>${subjects[subject].difficulty}</output></label>
+          <input type="range" min="1" max="10" value="${subjects[subject].difficulty}" aria-label="${subject} difficulty">
+        `;
+        wrapper.style.borderTop = `4px solid ${subjects[subject].color}`;
+        const input = wrapper.querySelector("input");
+        const output = wrapper.querySelector("output");
+        input.addEventListener("input", () => {
+          subjects[subject].difficulty = Number(input.value);
+          output.textContent = input.value;
+          drawMap();
+          setStatus("Schedule updated.");
+        });
+        difficultyGrid.appendChild(wrapper);
+      });
+    }
+
+    function renderCalmWeeks() {
+      calmWeek.innerHTML = "";
+      for (let week = 1; week <= weeks; week += 1) {
+        const option = document.createElement("option");
+        option.value = week;
+        option.textContent = `Week ${week}`;
+        calmWeek.appendChild(option);
+      }
+      calmWeek.value = "14";
+    }
+
+    function monthNumber(name) {
+      const key = name.toLowerCase().slice(0, 3);
+      return {
+        jan: 0,
+        feb: 1,
+        mar: 2,
+        apr: 3,
+        may: 4,
+        jun: 5,
+        jul: 6,
+        aug: 7,
+        sep: 8,
+        oct: 9,
+        nov: 10,
+        dec: 11
+      }[key];
+    }
+
+    function findDateInLine(line) {
+      const numeric = line.match(/\b(\d{1,2})[/-](\d{1,2})(?:[/-]\d{2,4})?\b/);
+      const year = semesterStartDate().getFullYear();
+      if (numeric) {
+        return new Date(year, Number(numeric[1]) - 1, Number(numeric[2]), 12, 0, 0);
+      }
+
+      const named = line.match(/\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.?\s+(\d{1,2})\b/i);
+      if (named) {
+        return new Date(year, monthNumber(named[1]), Number(named[2]), 12, 0, 0);
+      }
+      return null;
+    }
+
+    function findWeightInLine(line) {
+      const match = line.match(/\b(\d{1,3}(?:\.\d+)?)\s*%/);
+      return match ? Number(match[1]) : 10;
+    }
+
+    function inferSubject(line) {
+      const lower = line.toLowerCase();
+      if (/\bclinical|care plan|patient|rotation\b/.test(lower)) return "Clinicals";
+      if (/\bpharm|med|drug|dosage|calc\b/.test(lower)) return "Pharmacology";
+      if (/\bskill|lab|checkoff|check-off\b/.test(lower)) return "Skills Lab";
+      if (/\btheory|exam|paper|quiz|midterm|final\b/.test(lower)) return "Theory";
+      return "Theory";
+    }
+
+    function cleanAssignmentName(line) {
+      return line
+        .replace(/\b(due|deadline|date|weight|grade|points?)\b/gi, " ")
+        .replace(/\b\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?\b/g, " ")
+        .replace(/\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.?\s+\d{1,2}\b/gi, " ")
+        .replace(/\b\d{1,3}(?:\.\d+)?\s*%/g, " ")
+        .replace(/[-:;,|]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function parseSyllabusText() {
+      const lines = syllabusText.value.split(/\n+/);
+      const parsed = [];
+      lines.forEach((line, index) => {
+        const dueDate = findDateInLine(line);
+        if (!dueDate) return;
+        const name = cleanAssignmentName(line);
+        if (!name || name.length < 3) return;
+        const week = weekFromDate(dueDate);
+        const subject = inferSubject(line);
+        parsed.push({
+          id: `syllabus-${Date.now()}-${index}`,
+          name,
+          week,
+          weight: findWeightInLine(line),
+          subject,
+          dueDate,
+          color: subjects[subject].color
+        });
+      });
+
+      assignments.push(...parsed);
+      drawMap();
+      setStatus(parsed.length ? `${parsed.length} assignment ducks placed.` : "No dated assignments found.");
+    }
+
+    function setStatus(text) {
+      statusBox.textContent = text;
+    }
+
+    function openDuckModal(item) {
+      state.selectedDuck = item;
+      modalText.textContent = `${item.name} is a major assignment. Place 3-5 ducklings in earlier weeks.`;
+      taskList.innerHTML = "";
+      const defaults = ["Outline", "Draft", "Review", "", ""];
+      for (let i = 0; i < 5; i += 1) {
+        const row = document.createElement("div");
+        row.className = "task-row";
+        row.innerHTML = `
+          <input type="text" value="${defaults[i]}" placeholder="Duckling ${i + 1}" aria-label="Duckling ${i + 1}">
+          <select aria-label="Duckling ${i + 1} week"></select>
+        `;
+        const select = row.querySelector("select");
+        for (let week = 1; week < item.week; week += 1) {
+          const option = document.createElement("option");
+          option.value = week;
+          option.textContent = `Week ${week}`;
+          select.appendChild(option);
+        }
+        select.value = Math.max(1, item.week - (5 - i));
+        taskList.appendChild(row);
+      }
+      modal.classList.add("is-open");
+    }
+
+    function closeDuckModal() {
+      modal.classList.remove("is-open");
+      state.selectedDuck = null;
+    }
+
+    function placeDucklings() {
+      const mama = state.selectedDuck;
+      if (!mama) return;
+      const rows = [...taskList.querySelectorAll(".task-row")];
+      const tasks = rows.map(row => ({
+        name: row.querySelector("input").value.trim(),
+        week: Number(row.querySelector("select").value)
+      })).filter(task => task.name).slice(0, 5);
+
+      if (tasks.length < 3) {
+        setStatus("Add at least 3 ducklings.");
+        return;
+      }
+
+      state.ducklings = state.ducklings.filter(item => item.parentId !== mama.id);
+      tasks.forEach((task, index) => {
+        state.ducklings.push({
+          id: `${mama.id}-duckling-${index}`,
+          parentId: mama.id,
+          name: task.name,
+          week: task.week,
+          weight: 3,
+          subject: mama.subject,
+          color: duckColor(mama),
+          isDuckling: true
+        });
+      });
+      mama.aligned = true;
+      pendingPoofs.add(mama.id);
+      closeDuckModal();
+      drawMap();
+      setStatus("Ducklings placed. Mama Duck aligned on deadline day.");
+    }
+
+    calmForm.addEventListener("submit", event => {
+      event.preventDefault();
+      state.calmWaters.push({
+        id: `calm-${Date.now()}`,
+        week: Number(calmWeek.value),
+        duration: Number(calmDuration.value),
+        side: calmSide.value
+      });
+      drawMap();
+      setStatus("Schedule updated.");
+    });
+
+    semesterStartInput.addEventListener("change", () => {
+      drawMap();
+      setStatus("Schedule updated.");
+    });
+
+    parseSyllabus.addEventListener("click", parseSyllabusText);
+
+    cancelDucks.addEventListener("click", closeDuckModal);
+    placeDucks.addEventListener("click", placeDucklings);
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeDuckModal();
+    });
+
+    renderDifficultyControls();
+    renderCalmWeeks();
+    drawMap();
+  </script>
+</body>
+</html>
