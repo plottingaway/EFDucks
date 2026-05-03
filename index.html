@@ -3,133 +3,317 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Semester River</title>
+  <title>Semester Space Path</title>
   <style>
     :root {
-      --paper: #f5f1e8;
-      --ink: #202928;
-      --muted: #65716d;
-      --grid: rgba(39, 48, 45, 0.16);
+      --paper: #F5F2ED;
+      --ink: #101F3D;
+      --muted: #59657a;
+      --surface: rgba(255, 253, 247, 0.82);
+      --surface-strong: #fffdf7;
+      --line: rgba(124, 163, 206, 0.24);
+      --grid: rgba(124, 163, 206, 0.2);
       --bank: #d8cfbd;
-      --water: #8dbdc1;
+      --water: #0f1e33;
       --calm: rgba(70, 188, 181, 0.36);
-      --duck-yellow: #ffd84d;
-      --duck-white: #fffdf2;
-      --duck-lime: #d9ff57;
-      --duck-cyan: #9eeaff;
+      --university-blue: #101F3D;
+      --university-gold: #E8B339;
+      --planet-yellow: #ffd84d;
+      --planet-white: #fffdf2;
+      --planet-lime: #d9ff57;
+      --planet-cyan: #9eeaff;
+      --planet-rose: #ffb7d5;
     }
 
     * {
       box-sizing: border-box;
-      border-radius: 0 !important;
     }
 
     body {
       margin: 0;
-      background: var(--paper);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.62) 0 1px, transparent 1px 6px),
+        radial-gradient(circle at 82% 28%, rgba(16, 31, 61, 0.035) 0 1px, transparent 1px 7px),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.38), transparent 42%),
+        var(--paper);
       color: var(--ink);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
     }
 
     main {
       width: min(1180px, 100%);
       margin: 0 auto;
-      padding: 24px 16px 40px;
+      padding: 30px 16px 44px;
     }
 
     header {
+      position: relative;
       display: grid;
-      grid-template-columns: 1fr minmax(280px, 430px);
-      gap: 24px;
-      align-items: end;
-      margin-bottom: 16px;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding: 8px 72px 22px 0;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background:
+        radial-gradient(circle at 72% 50%, rgba(232, 179, 57, 0.8) 0 3px, transparent 4px),
+        linear-gradient(90deg, rgba(16, 31, 61, 0.58), rgba(158, 234, 255, 0.38), transparent);
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(2.1rem, 5vw, 4.6rem);
-      line-height: 0.95;
-      letter-spacing: 0;
+      font-size: clamp(2.25rem, 5vw, 4.5rem);
+      line-height: 1;
+      letter-spacing: 0.025em;
+      color: var(--university-blue);
+      font-family: Georgia, "Times New Roman", Times, serif;
+      font-weight: 700;
     }
 
     .subhead {
       margin: 0;
       color: var(--muted);
-      font-size: 0.95rem;
-      line-height: 1.45;
+      max-width: 780px;
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .start-guide {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 25px;
+      background: rgba(255, 253, 247, 0.58);
+      box-shadow: 0 14px 34px rgba(124, 163, 206, 0.13);
+    }
+
+    .start-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 10px;
+      border-radius: 18px;
+      background: rgba(255, 253, 247, 0.72);
+      color: var(--ink);
+      font-size: 1rem;
+      font-weight: 750;
+      line-height: 1.25;
+    }
+
+    .start-step b {
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 26px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(232, 179, 57, 0.22);
+      color: var(--university-blue);
     }
 
     .controls {
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 14px;
-      margin-bottom: 16px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+      margin-bottom: 18px;
     }
 
     .panel {
-      border: 1px solid var(--grid);
-      background: rgba(255, 253, 247, 0.66);
-      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 25px;
+      background: var(--surface);
+      padding: 18px;
+      box-shadow: 0 18px 42px rgba(124, 163, 206, 0.18);
+      backdrop-filter: blur(4px);
+    }
+
+    .date-form {
+      background: linear-gradient(135deg, rgba(255, 253, 247, 0.92), rgba(245, 242, 237, 0.78));
+    }
+
+    .syllabus-panel {
+      background: linear-gradient(135deg, rgba(255, 253, 247, 0.94), rgba(232, 179, 57, 0.11));
+    }
+
+    .controls .panel:first-child {
+      border-color: rgba(16, 31, 61, 0.18);
+      background: linear-gradient(135deg, rgba(255, 253, 247, 0.94), rgba(158, 234, 255, 0.12));
+    }
+
+    .controls .panel:nth-child(2) {
+      background: linear-gradient(135deg, rgba(255, 253, 247, 0.92), rgba(70, 188, 181, 0.11));
     }
 
     .panel h2 {
-      margin: 0 0 8px;
-      font-size: 1rem;
-      line-height: 1.2;
+      margin: 0 0 10px;
+      font-size: 1.02rem;
+      line-height: 1.25;
+      color: var(--university-blue);
+      letter-spacing: 0.035em;
+      text-align: left;
+      text-transform: none;
     }
 
     .panel p {
-      margin: 0 0 10px;
+      margin: 0 0 12px;
       color: var(--muted);
-      font-size: 0.88rem;
-      line-height: 1.38;
+      font-size: 1rem;
+      line-height: 1.6;
+      text-align: left;
     }
 
     .difficulty-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      align-items: stretch;
     }
 
     .difficulty-control {
       display: grid;
-      gap: 5px;
+      gap: 10px;
       min-width: 0;
-      font-size: 0.8rem;
+      font-size: 1rem;
       font-weight: 700;
+      padding: 14px;
+      border: 1px solid rgba(124, 163, 206, 0.22);
+      border-radius: 18px;
+      background: rgba(255, 253, 247, 0.7);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }
+
+    .difficulty-control:focus-within {
+      border-color: rgba(232, 179, 57, 0.72);
+      box-shadow: 0 0 0 3px rgba(232, 179, 57, 0.18);
+    }
+
+    .difficulty-control[data-tier="low"] {
+      border-left: 4px solid rgba(124, 163, 206, 0.55);
+    }
+
+    .difficulty-control[data-tier="medium"] {
+      border-left: 4px solid rgba(232, 179, 57, 0.68);
+    }
+
+    .difficulty-control[data-tier="high"] {
+      border-left: 4px solid rgba(16, 31, 61, 0.8);
+    }
+
+    .course-name-input {
+      width: 100%;
+      min-height: 42px;
+      padding: 0 12px;
+      font-size: 1rem;
+      font-weight: 750;
+      border-color: transparent;
+      border-radius: 25px;
+      background: rgba(255, 253, 247, 0.86);
+      box-shadow: inset 0 0 0 1px rgba(124, 163, 206, 0.18);
     }
 
     .difficulty-control label {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       gap: 8px;
+      min-width: 0;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      text-transform: none;
+    }
+
+    .difficulty-control label span {
+      overflow-wrap: anywhere;
+    }
+
+    .difficulty-control output {
+      min-width: 28px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(16, 31, 61, 0.08);
+      text-align: center;
     }
 
     input,
     select,
     button {
-      min-height: 34px;
-      border: 1px solid rgba(32, 41, 40, 0.24);
+      min-height: 44px;
+      border: 0;
+      border-radius: 25px;
       background: #fffdf7;
       color: var(--ink);
       font: inherit;
+      box-shadow: 0 8px 18px rgba(124, 163, 206, 0.14);
+    }
+
+    input,
+    select {
+      border: 1px solid rgba(124, 163, 206, 0.22);
+      padding: 0 10px;
+      font-size: 1rem;
+      line-height: 1.4;
+      max-width: 100%;
+    }
+
+    input:hover,
+    select:hover {
+      border-color: rgba(16, 31, 61, 0.28);
     }
 
     input[type="range"] {
       width: 100%;
-      accent-color: #405f5f;
+      accent-color: var(--university-blue);
+      box-shadow: none;
+      min-height: 44px;
+    }
+
+    input[type="file"]::file-selector-button {
+      border-radius: 25px !important;
+      border-top-left-radius: 25px !important;
+      border-top-right-radius: 25px !important;
+      border-bottom-right-radius: 25px !important;
+      border-bottom-left-radius: 25px !important;
+      padding: 10px 20px;
+      border: 1px solid rgba(16, 31, 61, 0.16);
+      background-color: #fffdf7;
+      color: #002D62;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    input[type="file"]::file-selector-button:hover {
+      background-color: rgba(232, 179, 57, 0.18);
+    }
+
+    :is(a, button, input, select, textarea, [tabindex]):focus-visible {
+      outline: 3px solid #FFCC00;
+      outline-offset: 3px;
     }
 
     .calm-form {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr auto;
-      gap: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      align-items: end;
     }
 
     .date-form {
       display: grid;
       grid-template-columns: minmax(180px, 260px) 1fr;
-      gap: 10px;
+      gap: 12px;
       align-items: end;
       margin-bottom: 14px;
     }
@@ -139,41 +323,135 @@
       display: grid;
       gap: 5px;
       color: #3f4c49;
-      font-size: 0.84rem;
+      font-size: 1rem;
       font-weight: 750;
+      letter-spacing: 0.035em;
+      text-transform: none;
+      line-height: 1.4;
     }
 
     .syllabus-panel {
       display: grid;
-      gap: 8px;
+      gap: 10px;
       margin-bottom: 16px;
     }
 
-    textarea {
-      width: 100%;
-      min-height: 120px;
-      resize: vertical;
-      border: 1px solid rgba(32, 41, 40, 0.24);
-      background: #fffdf7;
-      color: var(--ink);
-      font: inherit;
-      padding: 10px;
+    .upload-row {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .class-list {
+      display: grid;
+      gap: 6px;
+    }
+
+    .file-status {
+      min-height: 22px;
+      color: #3f4c49;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    .class-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid rgba(124, 163, 206, 0.18);
+      border-radius: 25px;
+      background: rgba(255, 253, 247, 0.78);
+      padding: 9px 10px;
+      color: #35413f;
+      font-size: 1rem;
+      font-weight: 750;
+      box-shadow: 0 10px 20px rgba(124, 163, 206, 0.14);
+    }
+
+    .class-row.empty-state {
+      justify-content: flex-start;
+      border-style: dashed;
+      background: rgba(255, 253, 247, 0.58);
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    .class-row button {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0 10px;
+      border-color: transparent;
+      background: #fff8ed;
     }
 
     button {
-      padding: 0 12px;
+      padding: 0 14px;
       font-weight: 750;
+      font-size: 1rem;
       cursor: pointer;
+      background: var(--university-gold);
+      border-color: transparent;
+      color: var(--university-blue);
+      letter-spacing: 0.02em;
+      text-transform: none;
+      box-shadow: 0 12px 24px rgba(124, 163, 206, 0.2);
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 15px 28px rgba(124, 163, 206, 0.24);
+    }
+
+    #parse-file {
+      min-height: 44px;
+      padding: 0 18px;
+      background: #D4AF37;
+      color: #002D62;
+      box-shadow: 0 14px 28px rgba(184, 150, 46, 0.25);
+    }
+
+    #parse-file:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+      transform: none;
+      box-shadow: 0 8px 18px rgba(124, 163, 206, 0.14);
+    }
+
+    #parse-file:hover {
+      background: #B8962E;
+    }
+
+    #parse-file:disabled:hover {
+      background: #D4AF37;
+    }
+
+    #calm-form button {
+      background: #fffdf7;
+      color: var(--university-blue);
+      border: 1px solid rgba(232, 179, 57, 0.42);
+      box-shadow: 0 10px 20px rgba(124, 163, 206, 0.14);
+    }
+
+    .class-row button,
+    #cancel-steps {
+      background: #fffdf7;
+      border-color: transparent;
     }
 
     .map-shell {
       position: relative;
       overflow: hidden;
-      border: 1px solid rgba(32, 41, 40, 0.22);
+      border: 0;
+      border-radius: 25px;
       background:
-        linear-gradient(90deg, rgba(0, 0, 0, 0.04), transparent 15%, transparent 85%, rgba(0, 0, 0, 0.04)),
-        #ece5d6;
-      box-shadow: inset 0 0 42px rgba(32, 41, 40, 0.16);
+        radial-gradient(circle at 22% 10%, rgba(255, 255, 255, 0.24) 0 1px, transparent 1px 7px),
+        radial-gradient(circle at 78% 24%, rgba(158, 234, 255, 0.2) 0 1px, transparent 1px 9px),
+        radial-gradient(circle at 44% 72%, rgba(255, 216, 77, 0.18) 0 1px, transparent 1px 10px),
+        linear-gradient(180deg, #101F3D 0%, #081426 46%, #050B16 100%);
+      box-shadow: 0 24px 54px rgba(124, 163, 206, 0.24), inset 0 0 46px rgba(158, 234, 255, 0.13);
     }
 
     svg {
@@ -182,43 +460,86 @@
       height: auto;
     }
 
+    .badge-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 300;
+      pointer-events: none;
+    }
+
+    .rest-badge-anchor {
+      position: absolute;
+      z-index: 300;
+      pointer-events: none;
+      display: inline-block;
+      width: auto;
+      height: auto;
+      min-width: 0;
+      min-height: 0;
+      max-width: none;
+      max-height: none;
+      padding: 0;
+      margin: 0;
+      border: none !important;
+      background: transparent;
+      background-color: transparent;
+      box-shadow: none !important;
+      overflow: visible;
+    }
+
     .week-bg {
       fill: transparent;
-      stroke: rgba(32, 41, 40, 0.12);
+      stroke: rgba(158, 234, 255, 0.1);
       stroke-width: 1;
     }
 
+    .week-focus-target {
+      fill: transparent;
+      stroke: transparent;
+      stroke-width: 3;
+      pointer-events: none;
+    }
+
+    .week-focus-target:focus,
+    .week-focus-target:focus-visible {
+      stroke: #FFCC00;
+      outline: none;
+    }
+
     .bank-shard {
-      fill: var(--bank);
-      stroke: rgba(94, 77, 52, 0.38);
-      stroke-width: 2;
+      fill: rgba(245, 242, 237, 0.04);
+      stroke: rgba(158, 234, 255, 0.13);
+      stroke-width: 1;
       stroke-linejoin: miter;
     }
 
     .water-shard {
-      fill: url(#waterGradient);
-      stroke: rgba(16, 42, 46, 0.25);
-      stroke-width: 1.5;
+      fill: url(#spaceGradient);
+      stroke: rgba(158, 234, 255, 0.26);
+      stroke-width: 1.8;
       stroke-linejoin: miter;
+      filter: url(#spaceGlow);
     }
 
     .dry-line {
-      stroke: rgba(91, 74, 50, 0.34);
-      stroke-width: 3;
+      stroke: rgba(158, 234, 255, 0.18);
+      stroke-width: 2;
       stroke-linecap: butt;
       stroke-linejoin: miter;
       fill: none;
     }
 
     .week-label {
-      fill: #45514e;
+      fill: rgba(255, 253, 247, 0.82);
       font-size: 18px;
       font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .week-date-label {
-      fill: #68736f;
-      font-size: 12px;
+      fill: rgba(245, 242, 237, 0.66);
+      font-size: 14px;
       font-weight: 700;
     }
 
@@ -231,7 +552,7 @@
 
     .today-label {
       fill: #b14e00;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 900;
       paint-order: stroke;
       stroke: rgba(245, 241, 232, 0.9);
@@ -239,38 +560,145 @@
       stroke-linejoin: miter;
     }
 
+    .reminder-alert {
+      stroke-width: 3;
+      fill: rgba(255, 253, 247, 0.86);
+    }
+
+    .reminder-alert.approaching {
+      stroke: #ffb000;
+    }
+
+    .reminder-alert.urgent {
+      stroke: #e53935;
+    }
+
+    .reminder-label {
+      fill: var(--ink);
+      font-size: 14px;
+      font-weight: 900;
+      text-anchor: middle;
+      paint-order: stroke;
+      stroke: rgba(255, 253, 247, 0.94);
+      stroke-width: 4px;
+      stroke-linejoin: miter;
+    }
+
     .texture-low {
-      stroke: rgba(245, 255, 252, 0.72);
-      stroke-width: 1.5;
+      stroke: rgba(158, 234, 255, 0.45);
+      stroke-width: 2;
       stroke-linecap: butt;
     }
 
     .texture-medium {
-      stroke: rgba(42, 94, 101, 0.58);
-      stroke-width: 4;
+      stroke: rgba(255, 253, 247, 0.38);
+      stroke-width: 3;
       stroke-linecap: butt;
       fill: none;
     }
 
     .texture-high {
-      stroke: rgba(16, 18, 18, 0.86);
-      stroke-width: 3.4;
+      stroke: rgba(255, 255, 255, 0.82);
+      stroke-width: 2.8;
       stroke-linecap: butt;
       stroke-linejoin: miter;
       fill: none;
     }
 
     .calm-water {
-      fill: var(--calm);
-      stroke: rgba(231, 255, 251, 0.72);
+      fill: rgba(158, 234, 255, 0.16);
+      stroke: rgba(158, 234, 255, 0.36);
       stroke-width: 1;
     }
 
-    .duck {
+    .life-preserver-icon {
+      display: grid;
+      justify-items: center;
+      gap: 2px;
+      position: absolute;
+      right: 10px;
+      top: var(--preserver-top, 50%);
+      transform: translateY(-50%);
+      z-index: 300;
+      width: auto;
+      height: auto;
+      padding: 0;
+      margin: 0;
+      border: none !important;
+      background: transparent;
+      box-shadow: none !important;
+      pointer-events: none;
+    }
+
+    .life-preserver-icon:focus,
+    .life-preserver-icon:focus-visible {
+      outline: 3px solid #FFCC00;
+      outline-offset: 4px;
+      border-radius: 25px;
+    }
+
+    .life-preserver-icon svg {
+      width: 90px;
+      height: 90px;
+      filter: drop-shadow(0 0 12px rgba(158, 234, 255, 0.45));
+    }
+
+    .life-preserver-text {
+      fill: #ffffff;
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      paint-order: stroke;
+      stroke: rgba(16, 31, 61, 0.55);
+      stroke-width: 2px;
+    }
+
+    .leader-line {
+      stroke: rgba(245, 242, 237, 0.58);
+      stroke-width: 1.4;
+      stroke-linecap: butt;
+      fill: none;
+    }
+
+    .label-bg {
+      fill: rgba(255, 253, 247, 0.9);
+      stroke: rgba(158, 234, 255, 0.28);
+      stroke-width: 1;
+    }
+
+    .milestone {
       cursor: pointer;
     }
 
-    .duck.poofing {
+    .planet-svg {
+      filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.4));
+    }
+
+    .planet-svg:hover .planet-image {
+      transform: scale(1.1);
+    }
+
+    .milestone:focus,
+    .milestone:focus-visible {
+      outline: none;
+    }
+
+    .milestone-focus-ring {
+      fill: none;
+      stroke: #FFCC00;
+      stroke-width: 3;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .milestone:focus .milestone-focus-ring,
+    .milestone:focus-visible .milestone-focus-ring {
+      opacity: 1;
+    }
+
+    .milestone.poofing {
       animation: poof 720ms ease-out both;
       transform-box: fill-box;
       transform-origin: center;
@@ -296,23 +724,16 @@
       }
     }
 
-    .duck-body {
-      stroke: rgba(25, 28, 26, 0.36);
-      stroke-width: 2;
-      stroke-linejoin: miter;
+    .planet-image {
+      pointer-events: none;
+      transition: transform 0.3s ease;
+      transform-box: fill-box;
+      transform-origin: center;
     }
 
-    .duck-wing {
-      fill: rgba(255, 255, 255, 0.28);
-    }
-
-    .duck-eye {
-      fill: #111;
-    }
-
-    .duck-label {
+    .milestone-label {
       fill: #1f2927;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 800;
       text-anchor: middle;
       paint-order: stroke;
@@ -321,13 +742,32 @@
       stroke-linejoin: miter;
     }
 
+    .milestone-label.stacked-label {
+      text-anchor: start;
+    }
+
+    .weight-label {
+      fill: var(--ink);
+      font-size: 14px;
+      font-weight: 900;
+      text-anchor: middle;
+      paint-order: stroke;
+      stroke: rgba(255, 253, 247, 0.92);
+      stroke-width: 4px;
+      stroke-linejoin: miter;
+    }
+
+    .weight-label.stacked-label {
+      text-anchor: start;
+    }
+
     .legend {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
       margin-top: 12px;
       color: #47524f;
-      font-size: 0.88rem;
+      font-size: 1rem;
       font-weight: 750;
     }
 
@@ -340,15 +780,21 @@
     .swatch {
       width: 14px;
       height: 14px;
-      border: 1px solid rgba(32, 41, 40, 0.25);
+      border: 0;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(124, 163, 206, 0.18);
     }
 
     .status {
       min-height: 28px;
       margin-top: 10px;
-      color: #40504c;
-      font-size: 0.9rem;
+      color: #344460;
+      font-size: 1rem;
       font-weight: 700;
+      padding: 8px 10px;
+      border-radius: 16px;
+      background: rgba(255, 253, 247, 0.62);
+      border: 1px solid rgba(124, 163, 206, 0.18);
     }
 
     .modal {
@@ -357,10 +803,11 @@
       z-index: 10;
       display: none;
       width: min(380px, calc(100vw - 48px));
-      border: 1px solid rgba(32, 41, 40, 0.24);
+      border: 0;
+      border-radius: 25px;
       background: #fffdf7;
       padding: 14px;
-      box-shadow: 0 16px 42px rgba(32, 41, 40, 0.22);
+      box-shadow: 0 20px 48px rgba(124, 163, 206, 0.28);
     }
 
     .modal.is-open {
@@ -375,13 +822,13 @@
     .modal p {
       margin: 0 0 10px;
       color: var(--muted);
-      font-size: 0.88rem;
+      font-size: 1rem;
       line-height: 1.35;
     }
 
     .task-row {
       display: grid;
-      grid-template-columns: 1fr 96px;
+      grid-template-columns: 1fr 150px 112px;
       gap: 8px;
       margin-bottom: 8px;
     }
@@ -393,18 +840,225 @@
       margin-top: 10px;
     }
 
+    .flight-log-button {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 420;
+      width: 46px;
+      min-height: 46px;
+      display: inline-grid;
+      place-items: center;
+      padding: 0;
+      border-radius: 25px;
+      background: var(--university-gold);
+      color: var(--university-blue);
+      box-shadow: 0 16px 36px rgba(16, 31, 61, 0.22);
+    }
+
+    .flight-log-button svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .app-dim {
+      position: fixed;
+      inset: 0;
+      z-index: 390;
+      display: none;
+      background: rgba(16, 31, 61, 0.38);
+      backdrop-filter: blur(1px);
+    }
+
+    .app-dim.is-open {
+      display: block;
+    }
+
+    .flight-log {
+      position: fixed;
+      inset: 0 0 0 auto;
+      z-index: 410;
+      width: min(420px, 92vw);
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 14px;
+      padding: 22px;
+      background: rgba(245, 242, 237, 0.96);
+      color: var(--university-blue);
+      box-shadow: -24px 0 48px rgba(16, 31, 61, 0.24);
+      transform: translateX(105%);
+      transition: transform 240ms ease;
+    }
+
+    .flight-log.is-open {
+      transform: translateX(0);
+    }
+
+    .flight-log-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 2px solid rgba(232, 179, 57, 0.72);
+      padding-bottom: 12px;
+    }
+
+    .flight-log h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", Times, serif;
+      letter-spacing: 0.04em;
+      color: var(--university-blue);
+    }
+
+    .flight-list {
+      display: grid;
+      align-content: start;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      overflow: auto;
+    }
+
+    .flight-entry,
+    .flight-empty {
+      border-radius: 18px;
+      background: #fffdf7;
+      padding: 12px 14px;
+      box-shadow: 0 12px 28px rgba(124, 163, 206, 0.18);
+    }
+
+    .flight-entry strong {
+      display: block;
+      color: var(--university-blue);
+      letter-spacing: 0.03em;
+    }
+
+    .flight-entry span,
+    .flight-empty {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .milestone.is-launching {
+      pointer-events: none;
+    }
+
+    .mobile-launch-card {
+      fill: rgba(255, 253, 247, 0.9);
+      stroke: rgba(124, 163, 206, 0.34);
+      stroke-width: 1;
+    }
+
+    .mobile-launch-button {
+      fill: var(--university-gold);
+      stroke: rgba(16, 31, 61, 0.2);
+      stroke-width: 1;
+    }
+
+    .mobile-launch-text {
+      fill: var(--university-blue);
+      font-size: 14px;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-anchor: middle;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
     @media (max-width: 780px) {
-      header,
+      .difficulty-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .calm-form {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+
+      .date-form {
+        grid-template-columns: 1fr;
+      }
+
+      .upload-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding: 14px 10px 32px;
+      }
+
+      header {
+        gap: 10px;
+        margin-bottom: 12px;
+        padding-right: 58px;
+      }
+
+      h1 {
+        font-size: 2.45rem;
+      }
+
+      .panel {
+        padding: 14px;
+      }
+
+      .date-form,
+      .syllabus-panel,
       .controls {
+        margin-bottom: 12px;
+      }
+
+      .start-guide {
         grid-template-columns: 1fr;
       }
 
       .difficulty-grid,
       .calm-form {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
       }
 
-      .date-form {
+      input,
+      select,
+      button {
+        min-height: 44px;
+      }
+
+      .class-row button,
+      .flight-log-button {
+        min-width: 44px;
+        min-height: 44px;
+      }
+
+      .flight-log-button {
+        top: 12px;
+        right: 12px;
+        width: 50px;
+        min-height: 50px;
+      }
+
+      .map-shell {
+        border-radius: 18px;
+        overflow: hidden;
+      }
+
+      .life-preserver-icon {
+        right: 12px;
+        min-width: 44px;
+        min-height: 44px;
+      }
+
+      .flight-log {
+        width: 100vw;
+        padding: 18px;
+      }
+
+      .task-row {
         grid-template-columns: 1fr;
       }
     }
@@ -413,23 +1067,31 @@
 <body>
   <main>
     <header>
-      <h1>Semester River</h1>
-      <p class="subhead">A static 2D map of the semester. Weeks are angular shards. Current texture shows cognitive intensity. Ducks mark assignments and sub-tasks.</p>
+      <h1>Semester Space Path</h1>
+      <p class="subhead">Map your semester by week, class, and workload. Planet milestones mark assignments, and the path texture helps show where your attention may be pulled.</p>
     </header>
+
+    <section class="start-guide" aria-label="Start here">
+      <div class="start-step"><b>1</b><span>Upload syllabus</span></div>
+      <div class="start-step"><b>2</b><span>Set class difficulty</span></div>
+      <div class="start-step"><b>3</b><span>Review your semester path</span></div>
+    </section>
 
     <section class="controls">
       <div class="panel">
         <h2>Current Difficulty</h2>
-        <p>Low difficulty uses sparse vertical lines. Medium difficulty uses steady wave lines. High difficulty uses dense black-and-white noise.</p>
+        <p>Rate the level of difficulty you anticipate for each class by sliding the bar. This creates a visual texture on your path—sparse star lines for light weeks, waves for steady work, and dense static for high-intensity periods.</p>
+        <p>Enter the name of your course exactly as it appears on your syllabus. This name will label your difficulty sliders and identify your colored planet milestones as they appear in the path.</p>
         <div id="difficulty-grid" class="difficulty-grid"></div>
       </div>
 
       <div class="panel">
-        <h2>Calm Waters</h2>
-        <p>Calm Waters are flat teal blocks with no internal pattern.</p>
+        <h2>Rest Orbit</h2>
+        <p>Schedule protected rest by selecting a week and duration. These appear as orbit markers to help you protect recovery time alongside your coursework.</p>
         <form id="calm-form" class="calm-form">
           <select id="calm-week" aria-label="Week"></select>
           <select id="calm-duration" aria-label="Duration">
+            <option value="1">1 hour</option>
             <option value="2">2 hours</option>
             <option value="3" selected>3 hours</option>
             <option value="4">4 hours</option>
@@ -439,9 +1101,9 @@
             <option value="left">Left</option>
             <option value="right">Right</option>
           </select>
-          <button type="submit">Add Calm Water</button>
+          <button type="submit">Add Rest Orbit</button>
         </form>
-        <div id="status" class="status">Schedule ready.</div>
+        <div id="status" class="status" aria-live="polite">Schedule ready.</div>
       </div>
     </section>
 
@@ -450,91 +1112,181 @@
         Semester Start (Monday)
         <input id="semester-start" type="date" value="2026-01-12">
       </label>
-      <p>Week shard labels and the Today marker are calculated from this date.</p>
     </section>
 
-    <section class="panel syllabus-panel" aria-label="Syllabus paste parser">
-      <label>
-        Syllabus Paste Box
-        <textarea id="syllabus-text" placeholder="Paste syllabus text here. Example: Pharmacology Final Exam due Apr 24 40%"></textarea>
-      </label>
-      <button id="parse-syllabus" type="button">Find assignments and place ducks</button>
+    <section class="panel syllabus-panel" aria-label="Syllabus file parser">
+      <div class="upload-row">
+        <label>
+          Upload Syllabus File
+          <input id="syllabus-file" type="file" accept=".txt,.text,.pdf,text/plain,application/pdf" aria-describedby="file-status">
+        </label>
+        <button id="parse-file" type="button" disabled>Scan Uploaded File</button>
+      </div>
+      <div id="file-status" class="file-status" aria-live="polite">No file selected.</div>
+      <div id="class-list" class="class-list" aria-label="Uploaded classes"></div>
     </section>
 
-    <section class="map-shell" aria-label="Geometric semester river map">
+    <section class="map-shell" aria-label="Meandering semester space path map">
       <svg id="map" viewBox="0 0 1120 1860" role="img" aria-labelledby="title desc">
-        <title id="title">Geometric semester river map</title>
-        <desc id="desc">Sixteen angular river shards with assignment ducks placed by week.</desc>
+        <title id="title">Meandering semester space path map</title>
+        <desc id="desc">Sixteen angular space path segments with assignment planet milestones placed by week.</desc>
       </svg>
+      <div id="badge-layer" class="badge-layer"></div>
     </section>
 
-    <div class="legend">
-      <span><i class="swatch" style="background: var(--duck-yellow)"></i>Clinicals</span>
-      <span><i class="swatch" style="background: var(--duck-white)"></i>Theory</span>
-      <span><i class="swatch" style="background: var(--duck-lime)"></i>Pharmacology</span>
-      <span><i class="swatch" style="background: var(--duck-cyan)"></i>Skills Lab</span>
-    </div>
+    <div id="legend" class="legend"></div>
   </main>
 
-  <aside id="duck-modal" class="modal" aria-live="polite">
-    <h2>Get your ducks in a row</h2>
-    <p id="modal-text">Place ducklings in earlier weeks.</p>
+  <button id="flight-log-button" class="flight-log-button" type="button" aria-label="Open Flight Log">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 19 C9 14 14 10 20 6"/>
+      <path d="M14 5 L20 6 L19 12"/>
+      <path d="M6 18 L11 18"/>
+    </svg>
+  </button>
+
+  <div id="app-dim" class="app-dim"></div>
+
+  <aside id="flight-log" class="flight-log" aria-labelledby="flight-log-title" aria-modal="true" role="dialog" aria-live="polite">
+    <div class="flight-log-header">
+      <h2 id="flight-log-title">Flight Log</h2>
+      <button id="close-flight-log" type="button">Close</button>
+    </div>
+    <ul id="flight-list" class="flight-list"></ul>
+  </aside>
+
+  <aside id="milestone-modal" class="modal" aria-live="polite">
+    <h2>Break this milestone down</h2>
+    <p id="modal-text">Place smaller milestone steps in earlier weeks.</p>
     <div id="task-list"></div>
     <div class="modal-actions">
-      <button id="cancel-ducks" type="button">Cancel</button>
-      <button id="place-ducks" type="button">Place ducklings</button>
+      <button id="cancel-steps" type="button">Cancel</button>
+      <button id="place-steps" type="button">Place steps</button>
     </div>
   </aside>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>
     const NS = "http://www.w3.org/2000/svg";
     const svg = document.querySelector("#map");
+    const badgeLayer = document.querySelector("#badge-layer");
     const difficultyGrid = document.querySelector("#difficulty-grid");
     const calmForm = document.querySelector("#calm-form");
     const calmWeek = document.querySelector("#calm-week");
     const calmDuration = document.querySelector("#calm-duration");
     const calmSide = document.querySelector("#calm-side");
     const semesterStartInput = document.querySelector("#semester-start");
-    const syllabusText = document.querySelector("#syllabus-text");
-    const parseSyllabus = document.querySelector("#parse-syllabus");
+    const syllabusFile = document.querySelector("#syllabus-file");
+    const parseFile = document.querySelector("#parse-file");
+    const fileStatus = document.querySelector("#file-status");
+    const classList = document.querySelector("#class-list");
+    const legend = document.querySelector("#legend");
     const statusBox = document.querySelector("#status");
-    const modal = document.querySelector("#duck-modal");
+    const modal = document.querySelector("#milestone-modal");
     const modalText = document.querySelector("#modal-text");
     const taskList = document.querySelector("#task-list");
-    const cancelDucks = document.querySelector("#cancel-ducks");
-    const placeDucks = document.querySelector("#place-ducks");
+    const cancelSteps = document.querySelector("#cancel-steps");
+    const placeSteps = document.querySelector("#place-steps");
+    const flightLogButton = document.querySelector("#flight-log-button");
+    const flightLog = document.querySelector("#flight-log");
+    const flightList = document.querySelector("#flight-list");
+    const closeFlightLog = document.querySelector("#close-flight-log");
+    const appDim = document.querySelector("#app-dim");
+
+    function orderControlPanel() {
+      const datePanel = document.querySelector(".date-form");
+      const uploadPanel = document.querySelector(".syllabus-panel");
+      const controlsPanel = document.querySelector(".controls");
+      if (datePanel && uploadPanel && controlsPanel) {
+        controlsPanel.before(datePanel, uploadPanel);
+      }
+    }
+
+    orderControlPanel();
 
     const topY = 92;
-    const weekH = 104;
+    const mobileQuery = window.matchMedia("(max-width: 600px)");
+    let weekH = mobileQuery.matches ? 146 : 104;
     const weeks = 16;
+    const maxUploadedClasses = 5;
+    const storageKey = "semesterRiverUploadedClasses";
+    const courseNameStorageKey = "semesterRiverCourseNames";
+    const milestoneStepStorageKey = "semesterRiverMilestoneSteps";
+    const flightLogStorageKey = "semesterRiverFlightLog";
+    const lastVisitKey = "semesterRiverLastVisitDate";
+    const notificationPromptKey = "semesterRiverNotificationPrompted";
+    let serviceWorkerRegistration = null;
 
     const subjects = {
-      Clinicals: { color: "#ffd84d", difficulty: 6 },
-      Theory: { color: "#fffdf2", difficulty: 8 },
-      Pharmacology: { color: "#d9ff57", difficulty: 9 },
-      "Skills Lab": { color: "#9eeaff", difficulty: 3 }
+      "Class 1": { color: "#ffd84d", difficulty: 6 },
+      "Class 2": { color: "#fffdf2", difficulty: 8 },
+      "Class 3": { color: "#d9ff57", difficulty: 9 },
+      "Class 4": { color: "#9eeaff", difficulty: 3 },
+      "Class 5": { color: "#ffb7d5", difficulty: 5 }
+    };
+
+    const planetAssets = {
+      "Class 1": {
+        name: "Earth",
+        src: "assets/planets/ef_planet_assets/earth/earth_512.png"
+      },
+      "Class 2": {
+        name: "Jupiter",
+        src: "assets/planets/ef_planet_assets/jupiter/jupiter_512.png"
+      },
+      "Class 3": {
+        name: "Saturn",
+        src: "assets/planets/ef_planet_assets/saturn/saturn_512.png"
+      },
+      "Class 4": {
+        name: "Mars",
+        src: "assets/planets/ef_planet_assets/mars/mars_512.png"
+      },
+      "Class 5": {
+        name: "Neptune",
+        src: "assets/planets/ef_planet_assets/neptune/neptune_512.png"
+      }
     };
 
     const assignments = [
-      { id: "care-plan", name: "Care Plan", week: 3, weight: 12, subject: "Clinicals" },
-      { id: "theory-midterm", name: "Theory Midterm", week: 6, weight: 25, subject: "Theory" },
-      { id: "med-calc", name: "Med Calc Exam", week: 8, weight: 18, subject: "Pharmacology" },
-      { id: "skills-check", name: "Skills Check", week: 10, weight: 8, subject: "Skills Lab" },
-      { id: "final-exam", name: "Final Exam", week: 15, weight: 40, subject: "Theory" },
-      { id: "pharm-final", name: "Pharm Final", week: 16, weight: 35, subject: "Pharmacology" }
+      { id: "class-1-project", name: "Project Checkpoint", week: 3, weight: 12, subject: "Class 1" },
+      { id: "class-2-midterm", name: "Midterm Exam", week: 6, weight: 25, subject: "Class 2" },
+      { id: "class-3-exam", name: "Unit Exam", week: 8, weight: 18, subject: "Class 3" },
+      { id: "class-4-quiz", name: "Skills Quiz", week: 10, weight: 8, subject: "Class 4" },
+      { id: "class-2-final", name: "Final Exam", week: 15, weight: 40, subject: "Class 2" },
+      { id: "class-5-paper", name: "Final Paper", week: 16, weight: 35, subject: "Class 5" }
     ];
 
     const state = {
       calmWaters: [{ id: "calm-1", week: 14, duration: 3, side: "center" }],
-      ducklings: [],
-      selectedDuck: null
+      uploadedClasses: [],
+      milestoneSteps: [],
+      selectedMilestone: null,
+      flightLog: [],
+      selectedSyllabusFile: null,
+      uploadedFile: null
     };
     const pendingPoofs = new Set();
+    let courseNames = {};
+
+    assignments.forEach(item => {
+      item.dueDate = dateFromWeekAndDay(item.week, 6).toISOString();
+    });
 
     const centerX = [560, 514, 606, 642, 498, 438, 530, 590, 468, 430, 548, 638, 584, 506, 650, 590];
     const leftWidth = [118, 86, 152, 104, 168, 74, 132, 92, 188, 108, 82, 156, 116, 176, 94, 138];
     const rightWidth = [82, 168, 94, 178, 76, 154, 106, 188, 92, 164, 142, 84, 176, 98, 160, 112];
     const skew = [-36, 42, -18, 58, -64, 22, -48, 35, -28, 62, -54, 18, -14, 46, -68, 30];
+    const mobileLeftWidth = [315, 256, 342, 288, 372, 246, 332, 268, 390, 304, 276, 350, 310, 368, 284, 326];
+    const mobileRightWidth = [252, 338, 270, 356, 248, 324, 286, 374, 258, 340, 312, 266, 352, 278, 332, 292];
+
+    function isMobileLayout() {
+      return mobileQuery.matches;
+    }
+
+    function mapHeight() {
+      return topY + weeks * weekH + 92;
+    }
 
     function el(name, attrs = {}, parent = svg) {
       const node = document.createElementNS(NS, name);
@@ -545,6 +1297,236 @@
 
     function subjectKeys() {
       return Object.keys(subjects);
+    }
+
+    function loadCourseNames() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(courseNameStorageKey) || "{}");
+        courseNames = saved && typeof saved === "object" ? saved : {};
+      } catch {
+        courseNames = {};
+      }
+    }
+
+    function saveCourseNames() {
+      localStorage.setItem(courseNameStorageKey, JSON.stringify(courseNames));
+    }
+
+    function courseName(subject) {
+      return courseNames[subject] || subject;
+    }
+
+    function setCourseName(subject, name) {
+      const cleaned = name.replace(/\s+/g, " ").trim();
+      if (cleaned) {
+        courseNames[subject] = cleaned;
+      } else {
+        delete courseNames[subject];
+      }
+      saveCourseNames();
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function normalizeSubject(subject) {
+      return subjects[subject] ? subject : "Class 1";
+    }
+
+    function classSubjectForUpload(index = state.uploadedClasses.length) {
+      const used = new Set(state.uploadedClasses.map(item => normalizeSubject(item.subject)));
+      return subjectKeys().find(subject => !used.has(subject)) || subjectKeys()[index % subjectKeys().length];
+    }
+
+    function normalizeAssignment(item) {
+      item.subject = normalizeSubject(item.subject);
+      if (!item.color) item.color = subjects[item.subject].color;
+      if (!item.courseId && item.classId) item.courseId = item.classId;
+      if (!item.classId && item.courseId) item.classId = item.courseId;
+      return item;
+    }
+
+    function uploadedAssignmentItems() {
+      return state.uploadedClasses.flatMap(item => item.assignments.map(normalizeAssignment));
+    }
+
+    function completedIds() {
+      return new Set(state.flightLog.map(entry => entry.id));
+    }
+
+    function activeAssignmentItems() {
+      const done = completedIds();
+      return [...assignments, ...uploadedAssignmentItems(), ...state.milestoneSteps]
+        .filter(item => !done.has(item.id));
+    }
+
+    function saveUploadedClasses() {
+      localStorage.setItem(storageKey, JSON.stringify(state.uploadedClasses));
+    }
+
+    function saveFlightLog() {
+      localStorage.setItem(flightLogStorageKey, JSON.stringify(state.flightLog));
+    }
+
+    function saveMilestoneSteps() {
+      localStorage.setItem(milestoneStepStorageKey, JSON.stringify(state.milestoneSteps));
+    }
+
+    function loadMilestoneSteps() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(milestoneStepStorageKey) || "[]");
+        state.milestoneSteps = Array.isArray(saved) ? saved.map(step => normalizeAssignment(step)).filter(step => step && step.id && step.parentId) : [];
+      } catch {
+        state.milestoneSteps = [];
+      }
+    }
+
+    function loadFlightLog() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(flightLogStorageKey) || "[]");
+        state.flightLog = Array.isArray(saved) ? saved.filter(entry => entry && entry.id && entry.name && entry.completedAt) : [];
+      } catch {
+        state.flightLog = [];
+      }
+    }
+
+    function loadUploadedClasses() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        state.uploadedClasses = Array.isArray(saved) ? saved.slice(0, maxUploadedClasses).map((item, index) => ({
+          ...item,
+          id: item.id,
+          courseId: item.courseId || item.id,
+          subject: normalizeSubject(item.subject || classSubjectForUpload(index)),
+          assignments: (item.assignments || []).map(assignment => normalizeAssignment({
+            ...assignment,
+            classId: assignment.classId || assignment.courseId || item.id,
+            courseId: assignment.courseId || assignment.classId || item.id,
+            subject: assignment.subject || item.subject || classSubjectForUpload(index)
+          }))
+        })) : [];
+        state.uploadedClasses.forEach(item => {
+          if (!courseNames[item.subject] && item.title) setCourseName(item.subject, item.title);
+        });
+      } catch {
+        state.uploadedClasses = [];
+      }
+    }
+
+    function renderClassList() {
+      classList.innerHTML = "";
+      if (!state.uploadedClasses.length) {
+        const empty = document.createElement("div");
+        empty.className = "class-row empty-state";
+        empty.textContent = "Upload a syllabus to generate your class path. No classes uploaded yet.";
+        classList.appendChild(empty);
+        return;
+      }
+
+      state.uploadedClasses.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "class-row";
+        row.innerHTML = `<span>${item.title} (${item.assignments.length})</span><button type="button" aria-label="Delete ${item.title}">X</button>`;
+        row.querySelector("button").addEventListener("click", () => deleteUploadedClass(item.courseId || item.id));
+        classList.appendChild(row);
+      });
+    }
+
+    function renderFlightLog() {
+      flightList.innerHTML = "";
+      if (!state.flightLog.length) {
+        const empty = document.createElement("li");
+        empty.className = "flight-empty";
+        empty.tabIndex = -1;
+        empty.textContent = "No completed tasks yet.";
+        flightList.appendChild(empty);
+        return;
+      }
+      state.flightLog.forEach(entry => {
+        const item = document.createElement("li");
+        item.className = "flight-entry";
+        item.tabIndex = -1;
+        const name = document.createElement("strong");
+        name.textContent = entry.name;
+        const date = document.createElement("span");
+        date.textContent = `Completed ${completionDateLabel(entry.completedAt)}`;
+        item.append(name, date);
+        flightList.appendChild(item);
+      });
+    }
+
+    function openFlightLog() {
+      renderFlightLog();
+      flightLog.classList.add("is-open");
+      appDim.classList.add("is-open");
+      flightLog.setAttribute("aria-label", `Flight Log opened. ${state.flightLog.length} tasks completed.`);
+      setStatus(`Flight Log opened. ${state.flightLog.length} tasks completed.`);
+      const firstItem = flightList.querySelector("li");
+      window.setTimeout(() => (firstItem || closeFlightLog).focus(), 0);
+    }
+
+    function closeFlightLogPanel() {
+      flightLog.classList.remove("is-open");
+      appDim.classList.remove("is-open");
+      flightLogButton.focus();
+    }
+
+    function deleteUploadedClass(courseId) {
+      const item = state.uploadedClasses.find(entry => (entry.courseId || entry.id) === courseId);
+      if (!item) return;
+      if (!confirm("Deleting this syllabus will remove this class, its planet, assignments, reminders, and planning steps from your calendar. Continue?")) return;
+
+      const resolvedCourseId = item.courseId || item.id;
+      state.uploadedClasses = state.uploadedClasses.filter(entry => (entry.courseId || entry.id) !== resolvedCourseId);
+      const removedIds = new Set(item.assignments.map(assignment => assignment.id));
+      const isRemovedCourseRecord = record =>
+        record &&
+        (record.courseId === resolvedCourseId ||
+          record.classId === resolvedCourseId ||
+          removedIds.has(record.id) ||
+          removedIds.has(record.parentId) ||
+          (typeof record.id === "string" && record.id.startsWith(`${resolvedCourseId}-`)));
+
+      state.milestoneSteps = state.milestoneSteps.filter(step => !isRemovedCourseRecord(step));
+      state.flightLog = state.flightLog.filter(entry => !isRemovedCourseRecord(entry));
+      if (item.subject) {
+        delete courseNames[normalizeSubject(item.subject)];
+        saveCourseNames();
+      }
+      saveUploadedClasses();
+      saveMilestoneSteps();
+      saveFlightLog();
+      renderDifficultyControls();
+      renderLegend();
+      renderClassList();
+      drawMap();
+      setStatus("Class removed.");
+    }
+
+    function classTitleFromFile(file) {
+      return file.name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim() || "Uploaded class";
+    }
+
+    function courseNameFromSyllabus(text, file) {
+      const lines = text.split(/\n+/).map(line => line.replace(/\s+/g, " ").trim()).filter(Boolean);
+      const labeled = lines.find(line => /^(course|class)\s+(name|title)\s*[:\-]/i.test(line));
+      if (labeled) {
+        return labeled.replace(/^(course|class)\s+(name|title)\s*[:\-]\s*/i, "").trim();
+      }
+      const codeLine = lines.find(line => /\b[A-Z]{2,5}\s*\d{3,4}\b/.test(line) && line.length <= 90);
+      if (codeLine) return codeLine;
+      const likelyTitle = lines.slice(0, 20).find(line =>
+        line.length >= 6 &&
+        line.length <= 80 &&
+        !isAdministrativeLine(line) &&
+        !/\b(week|schedule|assignment|due|points?|office|email|phone)\b/i.test(line)
+      );
+      return likelyTitle || classTitleFromFile(file);
     }
 
     function weekTop(week) {
@@ -566,8 +1548,35 @@
       return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
     }
 
+    function formatAriaDate(date) {
+      return date.toLocaleDateString("en-US", { month: "long", day: "numeric" });
+    }
+
+    function formatTime(date) {
+      return date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+    }
+
     function semesterStartDate() {
       return localDateFromInput(semesterStartInput.value);
+    }
+
+    function weekAriaLabel(week) {
+      const start = addDays(semesterStartDate(), (week - 1) * 7);
+      const end = addDays(start, 6);
+      return `Week ${week}: ${formatAriaDate(start)} to ${formatAriaDate(end)}`;
+    }
+
+    function assignmentAriaLabel(item) {
+      const weight = Number.isFinite(Number(item.weight)) ? Math.round(Number(item.weight)) : 0;
+      return `${courseName(normalizeSubject(item.subject))} ${item.name}, ${weight}% of course grade, due ${formatAriaDate(assignmentDueDate(item))}`;
+    }
+
+    function dateInputValue(date) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function completionDateLabel(value) {
+      return new Date(value).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
     }
 
     function weekRangeLabel(week) {
@@ -582,6 +1591,10 @@
       return Math.min(weeks, Math.max(1, Math.floor(days / 7) + 1));
     }
 
+    function dateFromWeekAndDay(week, dayIndex = 0) {
+      return addDays(semesterStartDate(), (week - 1) * 7 + dayIndex);
+    }
+
     function datePosition(date) {
       const start = semesterStartDate();
       const days = (date - start) / 86400000;
@@ -592,10 +1605,165 @@
       return { week, y };
     }
 
+    function assignmentDueDate(item) {
+      if (item.dueDate) return new Date(item.dueDate);
+      return addDays(semesterStartDate(), (item.week - 1) * 7 + 6);
+    }
+
+    function daysUntil(date) {
+      const today = new Date();
+      const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0, 0);
+      const target = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0);
+      return Math.round((target - startOfToday) / 86400000);
+    }
+
+    function dateKey(date = new Date()) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function parseDateKey(value) {
+      if (!value) return null;
+      const parts = value.split("-").map(Number);
+      if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
+      return new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
+    }
+
+    function daysBetweenDates(start, end) {
+      const a = new Date(start.getFullYear(), start.getMonth(), start.getDate(), 12, 0, 0);
+      const b = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 12, 0, 0);
+      return Math.round((b - a) / 86400000);
+    }
+
+    function majorMilestonesForWeek(week) {
+      return activeAssignmentItems()
+        .filter(item => !item.isMilestoneStep && item.week === week);
+    }
+
+    function currentWeekNumber() {
+      return weekFromDate(new Date());
+    }
+
+    function currentWeekMilestoneCount() {
+      return majorMilestonesForWeek(currentWeekNumber()).length;
+    }
+
+    function riverUpdateBody() {
+      const count = currentWeekMilestoneCount();
+      if (count === 0) {
+        return "Your path is clear. Time to check in on the next milestone.";
+      }
+      return `Time to check the path. You have ${count} assignment milestones to track this week.`;
+    }
+
+    function planetNotificationIcon() {
+      const svgIcon = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+          <rect width="128" height="128" fill="#0b1426"/>
+          <circle cx="64" cy="64" r="36" fill="#ffd84d" stroke="#101F3D" stroke-width="6"/>
+          <ellipse cx="64" cy="64" rx="53" ry="14" fill="none" stroke="#E8B339" stroke-width="7"/>
+          <circle cx="50" cy="50" r="7" fill="rgba(16,31,61,0.28)"/>
+          <circle cx="78" cy="74" r="10" fill="rgba(16,31,61,0.22)"/>
+        </svg>
+      `.trim();
+      return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgIcon)}`;
+    }
+
+    async function registerServiceWorker() {
+      if (!("serviceWorker" in navigator)) return null;
+      if (serviceWorkerRegistration) return serviceWorkerRegistration;
+      try {
+        serviceWorkerRegistration = await navigator.serviceWorker.register("./service-worker.js");
+        return serviceWorkerRegistration;
+      } catch {
+        return null;
+      }
+    }
+
+    async function showRiverUpdateNotification() {
+      if (!("Notification" in window) || Notification.permission !== "granted") return;
+      const registration = await registerServiceWorker();
+      const message = {
+        type: "SHOW_RIVER_UPDATE",
+        body: riverUpdateBody(),
+        icon: planetNotificationIcon()
+      };
+
+      if (registration && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage(message);
+        return;
+      }
+
+      if (registration) {
+        await registration.showNotification("Space Path Update", {
+          body: message.body,
+          icon: message.icon,
+          badge: message.icon,
+          tag: "semester-river-update",
+          renotify: false
+        });
+        return;
+      }
+
+      new Notification("Space Path Update", {
+        body: message.body,
+        icon: message.icon,
+        tag: "semester-river-update"
+      });
+    }
+
+    async function evaluateVisitNotification() {
+      const today = new Date();
+      const previousVisit = parseDateKey(localStorage.getItem(lastVisitKey));
+      if (previousVisit && daysBetweenDates(previousVisit, today) >= 3) {
+        await showRiverUpdateNotification();
+      }
+      localStorage.setItem(lastVisitKey, dateKey(today));
+    }
+
+    async function requestNotificationPermissionOnRiverInteraction() {
+      if (!("Notification" in window)) return;
+      localStorage.setItem(notificationPromptKey, "true");
+      await registerServiceWorker();
+      if (Notification.permission === "default") {
+        await Notification.requestPermission();
+      }
+      await evaluateVisitNotification();
+    }
+
+    function setUpNotificationEngine() {
+      registerServiceWorker();
+      if (!("Notification" in window)) {
+        localStorage.setItem(lastVisitKey, dateKey());
+        return;
+      }
+      if (Notification.permission === "granted") {
+        evaluateVisitNotification();
+        return;
+      }
+      localStorage.setItem(lastVisitKey, dateKey());
+      if (!localStorage.getItem(notificationPromptKey)) {
+        svg.addEventListener("click", requestNotificationPermissionOnRiverInteraction, { once: true });
+      }
+    }
+
     function shardPoints(week, expand = 0) {
       const i = week - 1;
       const y0 = weekTop(week);
       const y1 = y0 + weekH;
+      if (isMobileLayout()) {
+        const cx = 560;
+        const left0 = mobileLeftWidth[i];
+        const right0 = mobileRightWidth[i];
+        const next = Math.min(i + 1, weeks - 1);
+        const left1 = mobileLeftWidth[next];
+        const right1 = mobileRightWidth[next];
+        return [
+          [cx - left0 - expand, y0 + 6],
+          [cx + right0 + expand, y0],
+          [cx + right1 + expand, y1 - 6],
+          [cx - left1 - expand, y1]
+        ];
+      }
       const cx0 = centerX[i];
       const cx1 = centerX[Math.min(i + 1, centerX.length - 1)] + skew[i] * 0.35;
       return [
@@ -617,26 +1785,44 @@
       };
     }
 
-    function duckScale(item) {
-      if (item.isDuckling) return 0.92;
-      const weight = item.weight;
-      const base = weight >= 25 ? 1.8 : weight >= 15 ? 1.35 : 0.78;
-      if (pendingPoofs.has(item.id)) return base;
-      return item.aligned ? base * 0.6 : base;
+    function milestoneScale(item) {
+      if (item.isMilestoneStep) return 0.58;
+      const weight = Math.min(50, Math.max(1, Number(item.weight) || 1));
+      const minScale = 0.55;
+      const maxScale = 1.42;
+      const base = minScale + Math.sqrt(weight / 50) * (maxScale - minScale);
+      return Math.min(maxScale, Math.max(minScale, base));
     }
 
-    function duckColor(item) {
+    function milestoneColor(item) {
       if (item.color) return item.color;
-      return subjects[item.subject].color;
+      return subjects[normalizeSubject(item.subject)].color;
     }
 
-    function isMamaDuck(item) {
+    function planetAsset(item) {
+      return planetAssets[normalizeSubject(item.subject)] || planetAssets["Class 1"];
+    }
+
+    function darkerColor(hex, amount = 0.22) {
+      const raw = hex.replace("#", "");
+      if (raw.length !== 6) return "rgba(16, 31, 61, 0.42)";
+      const channels = [0, 2, 4].map(index => parseInt(raw.slice(index, index + 2), 16));
+      const darker = channels.map(value => Math.max(0, Math.round(value * (1 - amount))));
+      return `rgb(${darker[0]}, ${darker[1]}, ${darker[2]})`;
+    }
+
+    function isMajorMilestone(item) {
       return item.weight >= 16;
     }
 
+    function isPlanningEligible(item) {
+      if (item.isMilestoneStep) return false;
+      return item.weight >= 16 || /\b(test|exam|paper|project|essay|presentation|portfolio|research|final|midterm)\b/i.test(item.name);
+    }
+
     function textureTier(week) {
-      const relevant = [...assignments, ...state.ducklings].filter(item => item.week === week);
-      const maxDifficulty = relevant.reduce((max, item) => Math.max(max, subjects[item.subject].difficulty), 1);
+      const relevant = activeAssignmentItems().filter(item => item.week === week);
+      const maxDifficulty = relevant.reduce((max, item) => Math.max(max, subjects[normalizeSubject(item.subject)].difficulty), 1);
       if (maxDifficulty >= 8) return "high";
       if (maxDifficulty >= 4) return "medium";
       return "low";
@@ -645,11 +1831,16 @@
     function addDefs() {
       const defs = el("defs");
       defs.innerHTML = `
-        <linearGradient id="waterGradient" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#0b2c42"/>
-          <stop offset="50%" stop-color="#4aa4a9" stop-opacity="0.88"/>
-          <stop offset="100%" stop-color="#092538"/>
+        <linearGradient id="spaceGradient" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#101F3D" stop-opacity="0"/>
+          <stop offset="18%" stop-color="#111E33" stop-opacity="0.55"/>
+          <stop offset="50%" stop-color="#141E30" stop-opacity="0.92"/>
+          <stop offset="82%" stop-color="#111E33" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#101F3D" stop-opacity="0"/>
         </linearGradient>
+        <filter id="spaceGlow" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="#9eeaff" flood-opacity="0.18"/>
+        </filter>
       `;
     }
 
@@ -663,23 +1854,25 @@
       const minY = Math.min(...points.map(p => p[1]));
       const maxY = Math.max(...points.map(p => p[1]));
 
-      if (state.calmWaters.some(block => block.week === week)) {
-        state.calmWaters.filter(block => block.week === week).forEach(block => {
-          const width = block.side === "center" ? 190 : 132;
-          const x = block.side === "left" ? minX + 24 : block.side === "right" ? maxX - width - 24 : c.x - width / 2;
-          el("rect", {
-            class: "calm-water",
-            x,
-            y: minY + 34,
-            width,
-            height: 30 + block.duration * 5,
-            "clip-path": `url(#${clipId})`
-          });
+      const mobile = isMobileLayout();
+      const calmBlocks = state.calmWaters.filter(block => block.week === week).map(block => {
+        const width = mobile ? 172 : block.side === "center" ? 190 : 132;
+        const x = block.side === "left" ? minX + 24 : block.side === "right" ? maxX - width - 24 : c.x - width / 2;
+        const y = minY + (mobile ? 42 : 34);
+        const height = Math.max(mobile ? 88 : 74, 30 + block.duration * 5);
+        el("rect", {
+          class: "calm-water",
+          x,
+          y,
+          width,
+          height,
+          "clip-path": `url(#${clipId})`
         });
-      }
+        return { ...block, x, y, width, height };
+      });
 
       if (tier === "low") {
-        for (let x = minX + 38; x <= maxX - 20; x += 46) {
+        for (let x = minX + 38; x <= maxX - 20; x += mobile ? 72 : 46) {
           el("line", {
             class: "texture-low",
             x1: x,
@@ -690,20 +1883,23 @@
           });
         }
       } else if (tier === "medium") {
-        for (let x = minX + 24; x <= maxX - 20; x += 34) {
-          const d = `M ${x} ${minY + 4} C ${x + 18} ${minY + 30}, ${x - 18} ${minY + 62}, ${x + 4} ${maxY - 4}`;
+        for (let x = minX + 24; x <= maxX - 20; x += mobile ? 60 : 34) {
+          const wave = mobile ? 12 : 18;
+          const d = `M ${x} ${minY + 4} C ${x + wave} ${minY + weekH * 0.28}, ${x - wave} ${minY + weekH * 0.58}, ${x + 4} ${maxY - 4}`;
           el("path", { class: "texture-medium", d, "clip-path": `url(#${clipId})` });
         }
       } else {
-        for (let y = minY + 6; y <= maxY - 4; y += 8) {
+        for (let y = minY + 8; y <= maxY - 4; y += mobile ? 16 : 8) {
           const d = [];
-          for (let x = minX + 8; x <= maxX - 8; x += 16) {
-            const yy = y + ((Math.floor((x - minX) / 16) % 2 === 0) ? -7 : 7);
+          const step = mobile ? 28 : 16;
+          const amp = mobile ? 5 : 7;
+          for (let x = minX + 8; x <= maxX - 8; x += step) {
+            const yy = y + ((Math.floor((x - minX) / step) % 2 === 0) ? -amp : amp);
             d.push(`${d.length ? "L" : "M"} ${x.toFixed(1)} ${yy.toFixed(1)}`);
           }
           el("path", { class: "texture-high", d: d.join(" "), "clip-path": `url(#${clipId})` });
         }
-        for (let y = minY + 11; y <= maxY - 6; y += 12) {
+        for (let y = minY + 11; y <= maxY - 6; y += mobile ? 24 : 12) {
           el("line", {
             class: "texture-low",
             x1: minX + 12,
@@ -715,25 +1911,77 @@
           });
         }
       }
+
+      calmBlocks.forEach(block => {
+        drawRestBadge(
+          minX,
+          minY,
+          maxX,
+          maxY,
+          block.y + block.height / 2,
+          block.duration >= 2 ? "RECHARGE" : "REST",
+          block.duration
+        );
+      });
     }
 
-    function drawDuck(item, index, slot = 0, total = 1) {
+    function drawRestBadge(minX, minY, maxX, maxY, y, label = "REST", duration = 1) {
+      const anchor = document.createElement("div");
+      anchor.className = "rest-badge-anchor";
+      const height = mapHeight();
+      anchor.style.left = `${(minX / 1120) * 100}%`;
+      anchor.style.top = `${(minY / height) * 100}%`;
+      anchor.style.width = `${((maxX - minX) / 1120) * 100}%`;
+      anchor.style.height = `${((maxY - minY) / height) * 100}%`;
+      const icon = document.createElement("div");
+      icon.className = "life-preserver-icon";
+      icon.tabIndex = 0;
+      icon.setAttribute("role", "img");
+      icon.setAttribute("aria-label", label === "RECHARGE" ? "Recharge orbit" : "Rest orbit");
+      icon.style.setProperty("--preserver-top", `${((y - minY) / (maxY - minY)) * 100}%`);
+      const isRecharge = duration >= 2;
+      const strapColor = isRecharge ? "#E8B339" : "#9eeaff";
+      const ringColor = isRecharge ? "#FFCC00" : "#9eeaff";
+      icon.innerHTML = `
+        <svg viewBox="0 0 100 100" role="img" aria-label="${label}">
+          <circle cx="50" cy="50" r="31" fill="rgba(16,31,61,0.86)" stroke="${ringColor}" stroke-width="4"/>
+          <ellipse cx="50" cy="50" rx="44" ry="13" fill="none" stroke="${strapColor}" stroke-width="5"/>
+          <circle cx="50" cy="50" r="5" fill="#fffdf7"/>
+          <circle cx="29" cy="38" r="2.4" fill="#fffdf7" opacity="0.8"/>
+          <circle cx="73" cy="65" r="2.1" fill="#fffdf7" opacity="0.75"/>
+          <text class="life-preserver-text" x="50" y="51">${label}</text>
+        </svg>
+      `;
+      anchor.appendChild(icon);
+      badgeLayer.appendChild(anchor);
+    }
+
+    function drawMilestone(item, index, slot = 0, total = 1, layout = "row") {
       const weekPoints = shardPoints(item.week, 0);
       const c = centerOf(weekPoints);
       const spread = Math.min(260, Math.max(0, (total - 1) * 54));
-      const x = c.x - spread / 2 + slot * 54;
+      let x = c.x - spread / 2 + slot * 54;
       let y = c.y + ((index % 2) * 18 - 9);
-      if (item.aligned && !item.isDuckling) {
+      if (isMobileLayout()) {
+        x = Math.max(...weekPoints.map(point => point[0])) - 96;
+        y = weekTop(item.week) + 54 + slot * 42;
+      }
+      if (layout === "weekly-stack") {
+        const stackGap = isMobileLayout() ? 42 : 20;
+        x = isMobileLayout() ? Math.max(...weekPoints.map(point => point[0])) - 96 : c.x + 16;
+        y = weekTop(item.week) + (isMobileLayout() ? 54 : 22) + slot * stackGap;
+      }
+      if (item.aligned && !item.isMilestoneStep) {
         y = weekTop(item.week) + weekH - 26;
       }
-      const scale = duckScale(item);
-      const color = duckColor(item);
+      const scale = milestoneScale(item);
+      const asset = planetAsset(item);
       const group = el("g", {
-        class: `duck ${pendingPoofs.has(item.id) ? "poofing" : ""}`,
+        class: `milestone planet-svg ${pendingPoofs.has(item.id) ? "poofing" : ""}`,
         transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${scale})`,
-        tabindex: isMamaDuck(item) && !item.isDuckling ? "0" : "-1",
-        role: isMamaDuck(item) && !item.isDuckling ? "button" : "img",
-        "aria-label": `${item.name}, ${item.subject}, week ${item.week}`
+        tabindex: "0",
+        role: "button",
+        "aria-label": `${assignmentAriaLabel(item)}. ${isPlanningEligible(item) ? "Open planning protocol." : "Complete and launch."}`
       });
       if (pendingPoofs.has(item.id)) {
         group.addEventListener("animationend", () => {
@@ -742,46 +1990,159 @@
         }, { once: true });
       }
 
-      el("path", {
-        class: "duck-body",
-        fill: color,
-        d: "M -28 8 L -16 -12 L 12 -14 L 32 0 L 24 18 L -12 22 Z"
-      }, group);
-      el("path", {
-        class: "duck-body",
-        fill: color,
-        d: "M 12 -16 L 22 -30 L 40 -24 L 38 -8 L 26 -4 Z"
-      }, group);
-      el("path", {
-        class: "duck-body",
-        fill: "#d8973c",
-        d: "M 38 -21 L 54 -17 L 38 -11 Z"
-      }, group);
-      el("polygon", {
-        class: "duck-wing",
-        points: "-10,-4 10,0 0,12 -18,12"
-      }, group);
-      el("circle", { class: "duck-eye", cx: 30, cy: -21, r: 2.2 }, group);
-
-      el("text", {
-        class: "duck-label",
-        x: 0,
-        y: 44
-      }, group).textContent = item.isDuckling ? item.name : `${item.name} ${item.weight}%`;
-
-      if (isMamaDuck(item) && !item.isDuckling) {
-        group.addEventListener("click", () => openDuckModal(item));
-        group.addEventListener("keydown", event => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            openDuckModal(item);
-          }
-        });
+      if (isMobileLayout()) {
+        el("rect", { class: "mobile-launch-card", x: -344, y: -32, width: 420, height: 64, rx: 20, ry: 20 }, group);
+        el("rect", { class: "mobile-launch-button", x: 12, y: -22, width: 82, height: 44, rx: 22, ry: 22 }, group);
+        el("text", { class: "mobile-launch-text", x: 53, y: 5 }, group).textContent = "Launch";
       }
+      el("circle", { class: "milestone-focus-ring", cx: 0, cy: 0, r: 58 }, group);
+      el("title", {}, group).textContent = assignmentAriaLabel(item);
+      el("image", {
+        class: "planet-image",
+        href: asset.src,
+        x: -48,
+        y: -48,
+        width: 96,
+        height: 96,
+        preserveAspectRatio: "xMidYMid meet"
+      }, group);
+
+      if (isMajorMilestone(item) && !item.isMilestoneStep) {
+        const days = daysUntil(assignmentDueDate(item));
+        if (days === 7 || days === 3) {
+          const level = days === 3 ? "urgent" : "approaching";
+          const label = days === 3 ? "Urgent" : "Approaching";
+          el("polygon", {
+            class: `reminder-alert ${level}`,
+            points: "-28,-48 28,-48 36,-32 22,-18 -22,-18 -36,-32"
+          }, group);
+          el("text", {
+            class: "reminder-label",
+            x: 0,
+            y: -29
+          }, group).textContent = label;
+        }
+      }
+
+      group.addEventListener("click", () => activateMilestone(item, group));
+      group.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          activateMilestone(item, group);
+        }
+      });
+
+      return { item, x, y, scale, layout: isMobileLayout() ? "mobile-card" : layout };
+    }
+
+    function activateMilestone(item, group) {
+      if (isPlanningEligible(item)) {
+        openMilestoneModal(item);
+        return;
+      }
+      launchMilestone(item, group);
+    }
+
+    function launchMilestone(item, group) {
+      if (group.classList.contains("is-launching") || completedIds().has(item.id)) return;
+      group.classList.add("is-launching");
+      group.style.transformBox = "fill-box";
+      group.style.transformOrigin = "center";
+      group.style.transition = "transform 920ms cubic-bezier(0.22, 1, 0.36, 1), opacity 920ms ease";
+      requestAnimationFrame(() => {
+        group.style.transform = "translateY(-2200px) scale(0.72)";
+        group.style.opacity = "0";
+      });
+      window.setTimeout(() => {
+        state.flightLog = [
+          {
+            id: item.id,
+            parentId: item.parentId || "",
+            classId: item.classId || item.courseId || "",
+            courseId: item.courseId || item.classId || "",
+            name: item.name,
+            weight: item.weight,
+            completedAt: new Date().toISOString()
+          },
+          ...state.flightLog.filter(entry => entry.id !== item.id)
+        ];
+        saveFlightLog();
+        drawMap();
+        setStatus("Milestone launched. Flight Log updated.");
+      }, 960);
+    }
+
+    function dueKey(item) {
+      const date = assignmentDueDate(item);
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function labelText(item) {
+      return `${courseName(normalizeSubject(item.subject))}: ${item.name}`;
+    }
+
+    function gradeWeightText(item) {
+      return item.weightLabel || `${Math.round(Number(item.weight) || 0)}%`;
+    }
+
+    function labelMetaText(item) {
+      if (item.isMilestoneStep) return `Planned ${formatDate(assignmentDueDate(item))}, ${formatTime(assignmentDueDate(item))}`;
+      return `Due ${formatDate(assignmentDueDate(item))} - ${gradeWeightText(item)}`;
+    }
+
+    function drawStackedLabels(milestonePositions) {
+      const groups = new Map();
+      milestonePositions.forEach(position => {
+        const key = dueKey(position.item);
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(position);
+      });
+
+      groups.forEach(positions => {
+        positions.forEach((position, index) => {
+          const text = labelText(position.item);
+          const meta = labelMetaText(position.item);
+          const isWeeklyStack = position.layout === "weekly-stack";
+          const isMobileCard = position.layout === "mobile-card";
+          const side = isWeeklyStack || isMobileCard ? -1 : position.x > 560 ? -1 : 1;
+          const stackOffset = isWeeklyStack || isMobileCard ? 0 : (index - (positions.length - 1) / 2) * 24;
+          const labelX = isMobileCard ? position.x - 128 : isWeeklyStack ? position.x - 132 : position.x + side * 112;
+          const labelY = position.y + stackOffset + (isWeeklyStack ? 4 : isMobileCard ? 7 : 42);
+          const width = Math.min(250, Math.max(112, Math.max(text.length, meta.length) * 7.1));
+          const height = 38;
+          const rectX = side === 1 ? labelX - 8 : labelX - width + 8;
+          const textX = side === 1 ? labelX : labelX - width + 16;
+
+          el("path", {
+            class: "leader-line",
+            d: `M ${position.x.toFixed(1)} ${(position.y + (isWeeklyStack ? 2 : 24)).toFixed(1)} L ${(side === 1 ? rectX : rectX + width).toFixed(1)} ${(labelY - 7).toFixed(1)}`
+          });
+          el("rect", {
+            class: "label-bg",
+            x: rectX,
+            y: labelY - 22,
+            width,
+            height
+          });
+          el("text", {
+            class: "milestone-label stacked-label",
+            x: textX,
+            y: labelY - 6
+          }).textContent = text;
+
+          el("text", {
+            class: "weight-label stacked-label",
+            x: textX,
+            y: labelY + 10
+          }).textContent = meta;
+        });
+      });
     }
 
     function drawMap() {
       svg.innerHTML = "";
+      badgeLayer.innerHTML = "";
+      svg.setAttribute("viewBox", `0 0 1120 ${mapHeight()}`);
       addDefs();
       for (let week = 1; week <= weeks; week += 1) {
         const bgY = weekTop(week);
@@ -805,11 +2166,25 @@
       }
 
       drawTodayMarker();
-      const allDucks = [...assignments, ...state.ducklings];
+      const allMilestones = activeAssignmentItems();
+      const milestonePositions = [];
       for (let week = 1; week <= weeks; week += 1) {
-        const inWeek = allDucks.filter(item => item.week === week);
-        inWeek.forEach((item, index) => drawDuck(item, index, index, inWeek.length));
+        const weekPoints = shardPoints(week, 2);
+        el("polygon", {
+          class: "week-focus-target",
+          points: pointsToString(weekPoints),
+          tabindex: "0",
+          role: "group",
+          "aria-label": weekAriaLabel(week)
+        });
+        const inWeek = allMilestones.filter(item => item.week === week);
+        const majorCount = inWeek.filter(item => !item.isMilestoneStep).length;
+        const layout = majorCount > 3 || (isMobileLayout() && inWeek.length > 1) ? "weekly-stack" : "row";
+        inWeek.forEach((item, index) => {
+          milestonePositions.push(drawMilestone(item, index, index, inWeek.length, item.isMilestoneStep ? "row" : layout));
+        });
       }
+      drawStackedLabels(milestonePositions.filter(Boolean));
     }
 
     function drawTodayMarker() {
@@ -840,21 +2215,52 @@
       subjectKeys().forEach(subject => {
         const wrapper = document.createElement("div");
         wrapper.className = "difficulty-control";
+        wrapper.dataset.tier = difficultyTier(subjects[subject].difficulty);
+        wrapper.title = courseName(subject);
         wrapper.innerHTML = `
-          <label><span>${subject}</span><output>${subjects[subject].difficulty}</output></label>
-          <input type="range" min="1" max="10" value="${subjects[subject].difficulty}" aria-label="${subject} difficulty">
+          <input class="course-name-input" type="text" value="${escapeHtml(courseName(subject))}" title="${escapeHtml(courseName(subject))}" aria-label="${subject} course name">
+          <label><span>Difficulty</span><output>${subjects[subject].difficulty}</output></label>
+          <input type="range" min="1" max="10" value="${subjects[subject].difficulty}" aria-label="${escapeHtml(courseName(subject))} difficulty">
         `;
         wrapper.style.borderTop = `4px solid ${subjects[subject].color}`;
-        const input = wrapper.querySelector("input");
+        const nameInput = wrapper.querySelector(".course-name-input");
+        const slider = wrapper.querySelector('input[type="range"]');
         const output = wrapper.querySelector("output");
-        input.addEventListener("input", () => {
-          subjects[subject].difficulty = Number(input.value);
-          output.textContent = input.value;
+        nameInput.addEventListener("change", () => {
+          setCourseName(subject, nameInput.value);
+          wrapper.title = courseName(subject);
+          nameInput.title = courseName(subject);
+          slider.setAttribute("aria-label", `${courseName(subject)} difficulty`);
+          renderLegend();
+          drawMap();
+          setStatus("Course name updated.");
+        });
+        slider.addEventListener("input", () => {
+          subjects[subject].difficulty = Number(slider.value);
+          output.textContent = slider.value;
+          wrapper.dataset.tier = difficultyTier(subjects[subject].difficulty);
           drawMap();
           setStatus("Schedule updated.");
         });
         difficultyGrid.appendChild(wrapper);
       });
+    }
+
+    function renderLegend() {
+      legend.innerHTML = "";
+      subjectKeys().forEach(subject => {
+        const item = document.createElement("span");
+        const planet = planetAssets[subject];
+        item.innerHTML = `<i class="swatch" style="background: ${subjects[subject].color}"></i>${escapeHtml(planet.name)} - ${escapeHtml(courseName(subject))}`;
+        legend.appendChild(item);
+      });
+    }
+
+    function difficultyTier(value) {
+      const level = Number(value);
+      if (level >= 8) return "high";
+      if (level >= 4) return "medium";
+      return "low";
     }
 
     function renderCalmWeeks() {
@@ -887,136 +2293,385 @@
     }
 
     function findDateInLine(line) {
-      const numeric = line.match(/\b(\d{1,2})[/-](\d{1,2})(?:[/-]\d{2,4})?\b/);
       const year = semesterStartDate().getFullYear();
-      if (numeric) {
-        return new Date(year, Number(numeric[1]) - 1, Number(numeric[2]), 12, 0, 0);
+      const matches = [];
+      for (const match of line.matchAll(/\b(\d{1,2})[/-](\d{1,2})(?:[/-]\d{2,4})?\b/g)) {
+        matches.push({
+          index: match.index,
+          date: new Date(year, Number(match[1]) - 1, Number(match[2]), 12, 0, 0)
+        });
       }
 
-      const named = line.match(/\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.?\s+(\d{1,2})\b/i);
-      if (named) {
-        return new Date(year, monthNumber(named[1]), Number(named[2]), 12, 0, 0);
+      for (const match of line.matchAll(/\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b/gi)) {
+        matches.push({
+          index: match.index,
+          date: new Date(year, monthNumber(match[1]), Number(match[2]), 12, 0, 0)
+        });
+      }
+
+      for (const match of line.matchAll(/\bweek\s*(\d{1,2})\b/gi)) {
+        const week = Math.min(weeks, Math.max(1, Number(match[1])));
+        matches.push({
+          index: match.index,
+          date: dateFromWeekAndDay(week, 0)
+        });
+      }
+
+      matches.sort((a, b) => a.index - b.index);
+      return matches.length ? matches[0].date : null;
+    }
+
+    function findPercentInLine(line) {
+      const match = line.match(/\b(\d{1,3}(?:\.\d+)?)\s*%/);
+      return match ? Number(match[1]) : null;
+    }
+
+    function findPointsInLine(line) {
+      const possible = line.match(/\bpoints?\s+possible\s*[:=-]?\s*(\d{1,5})(?:\.\d+)?\b/i);
+      if (possible) return Number(possible[1]);
+
+      const beforeUnit = line.match(/\b(\d{1,5})(?:\.\d+)?\s*(?:pts?|points)\b/i);
+      if (beforeUnit) return Number(beforeUnit[1]);
+
+      const afterUnit = line.match(/\b(?:pts?|points)\s*[:=-]?\s*(\d{1,5})(?:\.\d+)?\b/i);
+      return afterUnit ? Number(afterUnit[1]) : null;
+    }
+
+    function findTotalCoursePoints(lines) {
+      for (const line of lines) {
+        const totalBefore = line.match(/\b(?:total(?:\s+course)?|course\s+total|total\s+points|points\s+total)\s*[:=-]?\s*(\d{1,6})(?:\.\d+)?\s*(?:pts?|points)?\b/i);
+        if (totalBefore) return Number(totalBefore[1]);
+
+        const totalAfter = line.match(/\b(\d{1,6})(?:\.\d+)?\s*(?:pts?|points)\s*(?:total|possible\s+total|course\s+total)\b/i);
+        if (totalAfter) return Number(totalAfter[1]);
       }
       return null;
     }
 
-    function findWeightInLine(line) {
-      const match = line.match(/\b(\d{1,3}(?:\.\d+)?)\s*%/);
-      return match ? Number(match[1]) : 10;
+    function isActionableAssignmentLine(line) {
+      return /\b(Due|Assignment|Exam|Quiz|Project|Paper|Essay|Test|Discussion|Lab|Homework|Reflection|Journal|Presentation|Points?|Pts?)\b/i.test(line);
     }
 
-    function inferSubject(line) {
-      const lower = line.toLowerCase();
-      if (/\bclinical|care plan|patient|rotation\b/.test(lower)) return "Clinicals";
-      if (/\bpharm|med|drug|dosage|calc\b/.test(lower)) return "Pharmacology";
-      if (/\bskill|lab|checkoff|check-off\b/.test(lower)) return "Skills Lab";
-      if (/\btheory|exam|paper|quiz|midterm|final\b/.test(lower)) return "Theory";
-      return "Theory";
+    function isAdministrativeLine(line) {
+      return /\b(Police|Library|Holiday|Break|Counseling|Syllabus|University)\b/i.test(line);
+    }
+
+    function inferSubject(line, classInfo) {
+      return normalizeSubject(classInfo.subject || "Class 1");
     }
 
     function cleanAssignmentName(line) {
       return line
+        .replace(/\bweek\s*\d{1,2}\b/gi, " ")
+        .replace(/\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b/gi, " ")
+        .replace(/\bpoints?\s+possible\s*[:=-]?\s*\d{1,5}(?:\.\d+)?\b/gi, " ")
+        .replace(/\b\d{1,5}(?:\.\d+)?\s*(?:pts?|points)\b/gi, " ")
+        .replace(/\b(?:pts?|points)\s*[:=-]?\s*\d{1,5}(?:\.\d+)?\b/gi, " ")
         .replace(/\b(due|deadline|date|weight|grade|points?)\b/gi, " ")
         .replace(/\b\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?\b/g, " ")
-        .replace(/\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.?\s+\d{1,2}\b/gi, " ")
+        .replace(/\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.?\s+\d{1,2}(?:st|nd|rd|th)?\b/gi, " ")
         .replace(/\b\d{1,3}(?:\.\d+)?\s*%/g, " ")
         .replace(/[-:;,|]+/g, " ")
         .replace(/\s+/g, " ")
         .trim();
     }
 
-    function parseSyllabusText() {
-      const lines = syllabusText.value.split(/\n+/);
+    function assignmentTypeFromLine(line) {
+      const match = line.match(/\b(Exam|Quiz|Project|Paper|Essay|Test|Assignment|Discussion|Lab|Homework|Reflection|Journal|Presentation)\b/i);
+      return match ? match[1].toLowerCase() : "";
+    }
+
+    function isGradableLine(line) {
+      return findPercentInLine(line) !== null || findPointsInLine(line) !== null;
+    }
+
+    function lineLooksLikeAssignmentStart(line) {
+      if (isAdministrativeLine(line)) return false;
+      if (/^\s*(due|deadline|date|points?\s+possible|pts?|points|total)\b/i.test(line)) return false;
+      return isActionableAssignmentLine(line) && cleanAssignmentName(line).length >= 3;
+    }
+
+    function candidateWindow(lines, index) {
+      return lines
+        .slice(index, Math.min(lines.length, index + 4))
+        .filter(line => !isAdministrativeLine(line))
+        .join(" ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function assignmentKey(name, dueDate, percentWeight, pointsPossible) {
+      const date = dateInputValue(dueDate);
+      return `${name.toLowerCase()}|${date}|${percentWeight || ""}|${pointsPossible || ""}`;
+    }
+
+    function parseSyllabusContent(text, classInfo) {
+      const lines = text.split(/\n+/).map(line => line.replace(/\s+/g, " ").trim()).filter(Boolean);
       const parsed = [];
+      let currentWeek = null;
+      const explicitTotalPoints = findTotalCoursePoints(lines);
+      const seen = new Set();
       lines.forEach((line, index) => {
-        const dueDate = findDateInLine(line);
+        const weekLine = line.match(/\bweek\s*(\d{1,2})\b/i);
+        if (weekLine) {
+          currentWeek = Math.min(weeks, Math.max(1, Number(weekLine[1])));
+          if (!lineLooksLikeAssignmentStart(line)) return;
+        }
+
+        if (isAdministrativeLine(line)) return;
+        if (!lineLooksLikeAssignmentStart(line)) return;
+        const candidate = candidateWindow(lines, index);
+        if (!candidate) return;
+        if (!isActionableAssignmentLine(candidate)) return;
+        const percentWeight = findPercentInLine(line) ?? findPercentInLine(candidate);
+        const pointsPossible = findPointsInLine(line) ?? findPointsInLine(candidate);
+        if (percentWeight === null && pointsPossible === null) return;
+
+        let dueDate = findDateInLine(candidate);
+        if (!dueDate && currentWeek && /\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b/i.test(candidate)) {
+          const dayName = candidate.match(/\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b/i);
+          const dayIndex = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].indexOf(dayName[1].toLowerCase());
+          dueDate = dateFromWeekAndDay(currentWeek, Math.max(0, dayIndex));
+        }
         if (!dueDate) return;
-        const name = cleanAssignmentName(line);
+        const nameSource = cleanAssignmentName(line).length >= 3 ? line : candidate;
+        const name = cleanAssignmentName(nameSource);
         if (!name || name.length < 3) return;
+        const key = assignmentKey(name, dueDate, percentWeight, pointsPossible);
+        if (seen.has(key)) return;
+        seen.add(key);
         const week = weekFromDate(dueDate);
-        const subject = inferSubject(line);
+        const subject = inferSubject(line, classInfo);
+        const planet = planetAssets[subject];
         parsed.push({
-          id: `syllabus-${Date.now()}-${index}`,
+          id: `${classInfo.id}-assignment-${index}`,
+          classId: classInfo.id,
+          courseId: classInfo.id,
+          classTitle: classInfo.title,
+          courseName: classInfo.title,
           name,
           week,
-          weight: findWeightInLine(line),
+          weight: percentWeight || 0,
+          weightLabel: percentWeight ? `${percentWeight}%` : "",
+          pointsPossible,
+          type: assignmentTypeFromLine(line),
           subject,
+          planet: planet.name,
+          planetSrc: planet.src,
           dueDate,
           color: subjects[subject].color
         });
       });
 
-      assignments.push(...parsed);
+      const calculatedTotalPoints = explicitTotalPoints || parsed.reduce((total, item) => total + (Number(item.pointsPossible) || 0), 0);
+      parsed.forEach(item => {
+        if (!item.weight && item.pointsPossible && calculatedTotalPoints) {
+          const percent = (Number(item.pointsPossible) / calculatedTotalPoints) * 100;
+          item.weight = Number(percent.toFixed(2));
+          item.weightLabel = `${item.pointsPossible} pts (${percent.toFixed(1)}%)`;
+          item.totalCoursePoints = calculatedTotalPoints;
+        } else if (item.pointsPossible && !item.weightLabel) {
+          item.weightLabel = `${item.pointsPossible} pts`;
+        }
+      });
+
+      return parsed.filter(item => Number(item.weight) > 0 || Number(item.pointsPossible) > 0);
+    }
+
+    async function extractPdfText(buffer) {
+      if (!window.pdfjsLib) return extractLoosePdfText(buffer);
+
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      try {
+        const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+        const pages = [];
+
+        for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+          const page = await pdf.getPage(pageNumber);
+          const content = await page.getTextContent();
+          let lastY = null;
+          let line = [];
+          const lines = [];
+
+          content.items.forEach(item => {
+            const y = Math.round(item.transform[5]);
+            if (lastY !== null && Math.abs(y - lastY) > 5) {
+              lines.push(line.join(" ").replace(/\s+/g, " ").trim());
+              line = [];
+            }
+            line.push(item.str);
+            lastY = y;
+          });
+
+          if (line.length) {
+            lines.push(line.join(" ").replace(/\s+/g, " ").trim());
+          }
+          pages.push(lines.filter(Boolean).join("\n"));
+        }
+
+        return pages.join("\n");
+      } catch (error) {
+        console.warn("pdf.js extraction failed; trying loose PDF text fallback.", error);
+        return extractLoosePdfText(buffer);
+      }
+    }
+
+    function extractLoosePdfText(buffer) {
+      const text = new TextDecoder("latin1").decode(buffer);
+      return text
+        .replace(/\\r/g, "\n")
+        .replace(/[()<>[\]{}]/g, " ")
+        .replace(/[^\x09\x0A\x0D\x20-\x7E]+/g, " ")
+        .replace(/\s{2,}/g, " ")
+        .replace(/(Week\s*\d{1,2}|Due|Assignment|Exam|Quiz|Project|Paper|Essay|Test|Discussion|Lab|Homework|Reflection|Journal|Presentation|Points?\s+Possible|\d{1,5}\s*(?:pts?|points)|\d{1,3}\s*%|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2}(?:st|nd|rd|th)?|\d{1,2}[/-]\d{1,2})/gi, "\n$1")
+        .replace(/\n\s+/g, "\n")
+        .trim();
+    }
+
+    function updateSelectedSyllabusFile() {
+      const file = syllabusFile.files && syllabusFile.files[0] ? syllabusFile.files[0] : null;
+      state.selectedSyllabusFile = file;
+      state.uploadedFile = file;
+      parseFile.disabled = !file;
+      console.log("uploadedFile state:", file ? { name: file.name, size: file.size, type: file.type } : null);
+      if (file) {
+        console.log("File selected", file.name);
+        fileStatus.textContent = `Selected file: ${file.name}`;
+      } else {
+        fileStatus.textContent = "No file selected.";
+      }
+    }
+
+    async function parseUploadedFile(fileFromHandler = state.uploadedFile) {
+      console.log("Scan clicked");
+      console.log("scan button clicked");
+      console.log("uploadedFile state:", state.uploadedFile ? { name: state.uploadedFile.name, size: state.uploadedFile.size, type: state.uploadedFile.type } : null);
+      const file = fileFromHandler || state.selectedSyllabusFile || (syllabusFile.files && syllabusFile.files[0]);
+      console.log("file passed to parser:", file ? { name: file.name, size: file.size, type: file.type } : null);
+      if (!file) {
+        setStatus("Select a PDF or text file first.");
+        return;
+      }
+
+      if (state.uploadedClasses.length >= maxUploadedClasses) {
+        setStatus("Maximum of 5 uploaded classes reached.");
+        return;
+      }
+
+      let text = "";
+      console.log("Parsing started");
+      if (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")) {
+        const buffer = await file.arrayBuffer();
+        text = await extractPdfText(buffer);
+      } else {
+        text = await file.text();
+      }
+      console.log("extracted text length:", text.length);
+      console.log("extracted text preview:", text.slice(0, 500));
+
+      const uploadedCourseId = `class-${Date.now()}`;
+      const classInfo = {
+        id: uploadedCourseId,
+        courseId: uploadedCourseId,
+        title: courseNameFromSyllabus(text, file),
+        subject: classSubjectForUpload()
+      };
+      classInfo.planet = planetAssets[classInfo.subject].name;
+      classInfo.planetSrc = planetAssets[classInfo.subject].src;
+      setCourseName(classInfo.subject, classInfo.title);
+      const parsed = parseSyllabusContent(text, classInfo);
+      console.log(`Assignments parsed: ${parsed.length}`);
+      console.log("parser result:", parsed);
+      if (!parsed.length) {
+        setStatus("We could not scan this syllabus. Please check that it includes assignment names, due dates, and either grade percentages or point values.");
+        return;
+      }
+
+      state.uploadedClasses.push({
+        ...classInfo,
+        assignments: parsed
+      });
+      console.log("Assignments added to state");
+      console.log("assignments added:", { courseId: classInfo.courseId, count: parsed.length, uploadedClasses: state.uploadedClasses.length });
+      saveUploadedClasses();
+      renderDifficultyControls();
+      renderLegend();
+      renderClassList();
       drawMap();
-      setStatus(parsed.length ? `${parsed.length} assignment ducks placed.` : "No dated assignments found.");
+      console.log("Calendar updated");
+      setStatus(`${parsed.length} assignment milestones placed.`);
     }
 
     function setStatus(text) {
       statusBox.textContent = text;
     }
 
-    function openDuckModal(item) {
-      state.selectedDuck = item;
-      modalText.textContent = `${item.name} is a major assignment. Place 3-5 ducklings in earlier weeks.`;
+    function openMilestoneModal(item) {
+      state.selectedMilestone = item;
+      modalText.textContent = `${courseName(normalizeSubject(item.subject))}: ${item.name}. Due ${formatDate(assignmentDueDate(item))}. Break this assignment, test, paper, or project into up to 5 planned steps.`;
       taskList.innerHTML = "";
       const defaults = ["Outline", "Draft", "Review", "", ""];
       for (let i = 0; i < 5; i += 1) {
+        const defaultWeek = Math.max(1, item.week - (5 - i));
+        const defaultDate = dateFromWeekAndDay(defaultWeek, 0);
         const row = document.createElement("div");
         row.className = "task-row";
         row.innerHTML = `
-          <input type="text" value="${defaults[i]}" placeholder="Duckling ${i + 1}" aria-label="Duckling ${i + 1}">
-          <select aria-label="Duckling ${i + 1} week"></select>
+          <input type="text" value="${defaults[i]}" placeholder="Step ${i + 1}" aria-label="Step ${i + 1}">
+          <input type="date" value="${dateInputValue(defaultDate)}" aria-label="Step ${i + 1} date">
+          <input type="time" value="09:00" aria-label="Step ${i + 1} time">
         `;
-        const select = row.querySelector("select");
-        for (let week = 1; week < item.week; week += 1) {
-          const option = document.createElement("option");
-          option.value = week;
-          option.textContent = `Week ${week}`;
-          select.appendChild(option);
-        }
-        select.value = Math.max(1, item.week - (5 - i));
         taskList.appendChild(row);
       }
       modal.classList.add("is-open");
     }
 
-    function closeDuckModal() {
+    function closeMilestoneModal() {
       modal.classList.remove("is-open");
-      state.selectedDuck = null;
+      state.selectedMilestone = null;
     }
 
-    function placeDucklings() {
-      const mama = state.selectedDuck;
-      if (!mama) return;
+    function placeMilestoneSteps() {
+      const milestone = state.selectedMilestone;
+      if (!milestone) return;
       const rows = [...taskList.querySelectorAll(".task-row")];
       const tasks = rows.map(row => ({
         name: row.querySelector("input").value.trim(),
-        week: Number(row.querySelector("select").value)
+        date: row.querySelector('input[type="date"]').value,
+        time: row.querySelector('input[type="time"]').value || "09:00"
       })).filter(task => task.name).slice(0, 5);
 
       if (tasks.length < 3) {
-        setStatus("Add at least 3 ducklings.");
+        setStatus("Add at least 3 steps.");
         return;
       }
 
-      state.ducklings = state.ducklings.filter(item => item.parentId !== mama.id);
+      state.milestoneSteps = state.milestoneSteps.filter(item => item.parentId !== milestone.id);
       tasks.forEach((task, index) => {
-        state.ducklings.push({
-          id: `${mama.id}-duckling-${index}`,
-          parentId: mama.id,
+        const [hour, minute] = task.time.split(":").map(Number);
+        const dueDate = localDateFromInput(task.date || dateInputValue(dateFromWeekAndDay(Math.max(1, milestone.week - 1), 0)));
+        dueDate.setHours(Number.isFinite(hour) ? hour : 9, Number.isFinite(minute) ? minute : 0, 0, 0);
+        state.milestoneSteps.push({
+          id: `${milestone.id}-step-${index}`,
+          parentId: milestone.id,
+          classId: milestone.classId || milestone.courseId || "",
+          courseId: milestone.courseId || milestone.classId || "",
           name: task.name,
-          week: task.week,
+          week: weekFromDate(dueDate),
+          dueDate: dueDate.toISOString(),
+          time: task.time,
           weight: 3,
-          subject: mama.subject,
-          color: duckColor(mama),
-          isDuckling: true
+          subject: milestone.subject,
+          color: milestoneColor(milestone),
+          isMilestoneStep: true
         });
       });
-      mama.aligned = true;
-      pendingPoofs.add(mama.id);
-      closeDuckModal();
+      milestone.aligned = true;
+      pendingPoofs.add(milestone.id);
+      closeMilestoneModal();
+      saveMilestoneSteps();
       drawMap();
-      setStatus("Ducklings placed. Mama Duck aligned on deadline day.");
+      setStatus("Steps placed. Milestone aligned on deadline day.");
     }
 
     calmForm.addEventListener("submit", event => {
@@ -1036,17 +2691,52 @@
       setStatus("Schedule updated.");
     });
 
-    parseSyllabus.addEventListener("click", parseSyllabusText);
+    function syncResponsiveMap() {
+      const nextWeekHeight = mobileQuery.matches ? 146 : 104;
+      if (nextWeekHeight !== weekH) {
+        weekH = nextWeekHeight;
+        drawMap();
+      }
+    }
 
-    cancelDucks.addEventListener("click", closeDuckModal);
-    placeDucks.addEventListener("click", placeDucklings);
+    if (typeof mobileQuery.addEventListener === "function") {
+      mobileQuery.addEventListener("change", syncResponsiveMap);
+    } else if (typeof mobileQuery.addListener === "function") {
+      mobileQuery.addListener(syncResponsiveMap);
+    }
+
+    syllabusFile.addEventListener("change", updateSelectedSyllabusFile);
+    syllabusFile.addEventListener("input", updateSelectedSyllabusFile);
+
+    parseFile.onclick = () => {
+      parseUploadedFile(state.uploadedFile).catch(error => {
+        console.error("Syllabus scan failed:", error);
+        setStatus("We could not scan this syllabus. Please check that it includes assignment names, due dates, and either grade percentages or point values.");
+      });
+    };
+
+    flightLogButton.addEventListener("click", openFlightLog);
+    closeFlightLog.addEventListener("click", closeFlightLogPanel);
+    appDim.addEventListener("click", closeFlightLogPanel);
+    cancelSteps.addEventListener("click", closeMilestoneModal);
+    placeSteps.addEventListener("click", placeMilestoneSteps);
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape") closeDuckModal();
+      if (event.key === "Escape") {
+        closeMilestoneModal();
+        if (flightLog.classList.contains("is-open")) closeFlightLogPanel();
+      }
     });
 
+    loadCourseNames();
+    loadFlightLog();
+    loadUploadedClasses();
+    loadMilestoneSteps();
     renderDifficultyControls();
     renderCalmWeeks();
+    renderLegend();
+    renderClassList();
     drawMap();
+    setUpNotificationEngine();
   </script>
 </body>
 </html>

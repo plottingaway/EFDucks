@@ -1,9 +1,8 @@
-[README.md](https://github.com/user-attachments/files/27298326/README.md)
-# Semester River
+# Semester Space Path
 
-Semester River is a single-page, static HTML app for turning a semester syllabus into a visual planning map.
+Semester Space Path is a single-page, static HTML app for turning a semester syllabus into a visual planning map.
 
-The map represents a 16-week term as angular geometric shards. Assignments appear as ducks, with larger Mama Ducks for major assignments and smaller ducklings for planned subtasks. Course difficulty is shown with static textures, and Calm Waters mark protected planning or recovery blocks.
+The map represents a 16-week term as a meandering cosmic path. Assignments appear as planet milestones, with larger planets for major assignments and smaller planets for planned subtasks. Course difficulty is shown with static textures, and Rest Orbit markers protect planning or recovery blocks.
 
 ## Open the App
 
@@ -21,22 +20,26 @@ http://127.0.0.1:8765/
 - Semester start date picker
 - Automatic week date ranges
 - Today marker
-- Syllabus paste box with basic date and assignment parsing
-- Subject-colored ducks:
-  - Clinicals: bright yellow
-  - Theory: crisp white
-  - Pharmacology: pale electric lime
-  - Skills Lab: light cyan
-- Mama Duck planning interaction
-- Ducklings placed upstream in earlier weeks
-- Poof animation when a major assignment is planned
+- PDF/text syllabus upload with basic date and assignment parsing
+- Class-colored planet milestones:
+  - Class 1: bright yellow
+  - Class 2: crisp white
+  - Class 3: pale electric lime
+  - Class 4: light cyan
+  - Class 5: soft rose
+- Editable course names that relabel the difficulty sliders and legend
+- Major milestone planning interaction
+- Smaller milestone steps placed in earlier weeks
+- Completion launch animation when a task is finished
 - Static difficulty textures
-- Calm Waters blocks
+- Rest Orbit blocks
+- Transparent PNG planet assets for Earth, Jupiter, Saturn, Mars, and Neptune
 
 ## Files
 
 - `index.html` - main GitHub Pages entry point
 - `semester_river.html` - same app, kept as a named working copy
+- `assets/planets/ef_planet_assets/` - transparent PNG planet milestone assets
 - `extract_syllabus_assignments.py` - optional PDF syllabus parser
 - `add_upstream_echo.py` - optional helper for adding Boulder notifications to JSON
 - `requirements.txt` - optional Python dependencies
