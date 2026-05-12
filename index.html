@@ -29,8 +29,18 @@
       box-sizing: border-box;
     }
 
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     body {
+      min-height: 100%;
       margin: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
       background:
         radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.62) 0 1px, transparent 1px 6px),
         radial-gradient(circle at 82% 28%, rgba(16, 31, 61, 0.035) 0 1px, transparent 1px 7px),
@@ -48,6 +58,7 @@
       width: min(1180px, 100%);
       margin: 0 auto;
       padding: 30px 16px 44px;
+      overflow: visible;
     }
 
     .start-here-shell {
@@ -994,6 +1005,7 @@
       gap: 8px;
       margin: 0;
       padding: 13px;
+      grid-template-columns: minmax(0, 1fr) auto;
       align-self: start;
       background:
         radial-gradient(circle at 88% 14%, rgba(158, 234, 255, 0.2), transparent 26%),
@@ -1003,6 +1015,7 @@
     }
 
     .workload-forecast h2 {
+      grid-column: 1 / -1;
       margin: 0;
       color: var(--university-blue);
       font-size: 1rem;
@@ -1029,11 +1042,13 @@
       grid-template-columns: repeat(3, minmax(64px, 1fr));
       gap: 5px;
       align-items: stretch;
+      min-width: 0;
     }
 
     .forecast-support-action {
       display: none;
       margin-top: 8px;
+      grid-column: 1 / -1;
     }
 
     .forecast-support-action.is-open {
@@ -1052,6 +1067,37 @@
       font-size: 0.92rem;
       font-weight: 850;
       text-align: left;
+    }
+
+    .forecast-duck-accent {
+      display: grid;
+      place-items: center;
+      align-self: end;
+      justify-self: end;
+      width: clamp(78px, 7.8vw, 122px);
+      aspect-ratio: 1;
+      max-width: 22vw;
+      height: auto;
+      opacity: 0.92;
+      background: transparent !important;
+      background-color: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      filter: drop-shadow(0 12px 18px rgba(16, 31, 61, 0.12));
+      pointer-events: none;
+    }
+
+    .forecast-duck-accent svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .workload-forecast:not(.show-duck-accent) .forecast-duck-accent {
+      opacity: 0.72;
     }
 
     .forecast-week {
@@ -1682,12 +1728,13 @@
 
     .review-list {
       display: grid;
-      gap: 8px;
+      gap: 16px;
       min-height: 120px;
-      padding: 10px;
-      border: 2px solid #d92323;
-      background: #f4f4f4;
-      max-height: 360px;
+      padding: 14px;
+      border: 1px solid rgba(124, 163, 206, 0.22);
+      border-radius: 18px;
+      background: rgba(255, 253, 247, 0.72);
+      max-height: min(62vh, 560px);
       overflow: auto;
       color: #101F3D;
       opacity: 1;
@@ -1696,13 +1743,13 @@
 
     .review-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 10px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
       align-items: end;
-      padding: 12px;
-      border-radius: 16px;
+      padding: 16px;
+      border-radius: 20px;
       background: #ffffff;
-      border: 3px solid #1d6fd3;
+      border: 1px solid rgba(124, 163, 206, 0.28);
       min-height: 120px;
       color: #101F3D;
       opacity: 1;
@@ -1730,7 +1777,7 @@
     .status-chip-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
       align-items: center;
     }
 
@@ -1768,17 +1815,21 @@
 
     .inline-candidate-field {
       display: grid;
-      gap: 5px;
+      gap: 8px;
+      min-width: 0;
+      align-content: start;
     }
 
     .inline-candidate-label {
       font-size: 0.82rem;
       color: #59657a;
+      line-height: 1.2;
     }
 
     .inline-candidate-value {
       width: 100%;
-      padding: 9px 10px;
+      min-height: 44px;
+      padding: 11px 12px;
       border: 1px solid rgba(124, 163, 206, 0.46);
       border-radius: 12px;
       background: #fffdf7;
@@ -1787,6 +1838,7 @@
       font: inherit;
       line-height: 1.35;
       cursor: text;
+      overflow-wrap: anywhere;
     }
 
     .inline-candidate-value:hover,
@@ -1800,14 +1852,16 @@
       grid-column: 1 / -1;
       color: #101F3D;
       font-size: 0.9rem;
-      line-height: 1.4;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
     }
 
     .review-actions {
       grid-column: 1 / -1;
       display: flex;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
+      padding-top: 4px;
     }
 
     .review-actions button {
@@ -1843,11 +1897,11 @@
 
     .mvp-suggestion-card {
       display: grid;
-      gap: 10px;
-      padding: 14px;
-      border-radius: 18px;
+      gap: 14px;
+      padding: 16px;
+      border-radius: 20px;
       background: #ffffff;
-      border: 3px solid #1d6fd3;
+      border: 1px solid rgba(124, 163, 206, 0.28);
       box-shadow: 0 8px 18px rgba(124, 163, 206, 0.12);
       touch-action: pan-y;
       transition: transform 160ms ease, opacity 160ms ease;
@@ -1863,8 +1917,9 @@
 
     .mvp-suggestion-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      align-items: stretch;
     }
 
     .confidence-pill {
@@ -2974,12 +3029,49 @@
       gap: 8px;
     }
 
+    .course-row-label {
+      display: inline-flex;
+      min-width: 0;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .course-row-label strong {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .course-planet-thumb {
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
+      display: inline-grid;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
     .legend-planet {
       width: 30px;
       height: 30px;
       object-fit: contain;
       flex: 0 0 30px;
       filter: drop-shadow(0 3px 7px rgba(16, 31, 61, 0.2));
+    }
+
+    .planet-image-fallback {
+      width: 30px;
+      height: 30px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid rgba(158, 234, 255, 0.5);
+      background: radial-gradient(circle at 30% 28%, #fffdf7, #9eeaff 55%, #101f3d 100%);
+      color: #101f3d;
+      font-size: 0.78rem;
+      font-weight: 900;
+      box-shadow: 0 3px 7px rgba(16, 31, 61, 0.14);
     }
 
     .status {
@@ -3317,6 +3409,17 @@
     @media (max-width: 600px) {
       main {
         padding: 14px 10px 32px;
+        overflow: visible;
+      }
+
+      html,
+      body {
+        height: auto;
+        min-height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        touch-action: pan-y;
+        overscroll-behavior-y: auto;
       }
 
       header {
@@ -3394,16 +3497,15 @@
 
       .review-list {
         max-height: min(58vh, 520px);
-        padding: 8px;
+        padding: 10px;
         scroll-padding: 14px;
         -webkit-overflow-scrolling: touch;
       }
 
       .review-row,
       .mvp-suggestion-card {
-        gap: 12px;
-        padding: 14px;
-        border-width: 2px;
+        gap: 14px;
+        padding: 15px;
       }
 
       .mvp-suggestion-grid {
@@ -3442,6 +3544,16 @@
 
       .forecast-strip {
         grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .workload-forecast {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .forecast-duck-accent {
+        justify-self: center;
+        width: min(90px, 28vw);
+        max-width: none;
       }
 
       .planet-interaction-button {
@@ -3552,6 +3664,16 @@
           <h2 id="workload-forecast-title">Week Ahead</h2>
           <p id="forecast-trend" class="forecast-trend">Add assignments to see upcoming workload patterns.</p>
           <div id="forecast-strip" class="forecast-strip" aria-live="polite"></div>
+          <div id="forecast-duck-accent" class="forecast-duck-accent" aria-hidden="true">
+            <svg viewBox="0 0 80 80" focusable="false">
+              <circle cx="40" cy="38" r="28" fill="rgba(158,234,255,0.16)" stroke="#9eeaff" stroke-width="3"/>
+              <path d="M25 47 C28 34 43 31 54 39 C62 45 62 58 49 61 L31 61 C23 58 20 53 25 47 Z" fill="#ffd84d" stroke="#101F3D" stroke-width="2"/>
+              <path d="M51 39 C57 35 63 37 66 42 C60 43 56 43 51 39 Z" fill="#E8B339" stroke="#101F3D" stroke-width="2"/>
+              <circle cx="38" cy="40" r="3" fill="#101F3D"/>
+              <path d="M30 54 C36 58 44 58 51 54" fill="none" stroke="#101F3D" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="40" cy="38" r="22" fill="none" stroke="rgba(255,253,247,0.8)" stroke-width="3"/>
+            </svg>
+          </div>
           <div id="forecast-support-action" class="forecast-support-action" aria-live="polite"></div>
           <label class="forecast-dev-controls debug-only">
             DEV forecast date
@@ -3762,6 +3884,10 @@
         <div>Total segments created from OCR: 0</div>
         <div>Accepted candidates: 0</div>
         <div>Rejected segments: 0</div>
+      </div>
+      <div id="date-extraction-trace" class="ocr-segments-panel debug-only" aria-live="polite">
+        <strong>Date Extraction Trace</strong>
+        <div>No OCR date trace yet.</div>
       </div>
       <button id="open-quick-add" type="button">+ Add Assignment</button>
       <section id="quick-add-panel" class="quick-add-panel" aria-label="Add one assignment">
@@ -4075,6 +4201,7 @@
     const forecastTrend = document.querySelector("#forecast-trend");
     const forecastStrip = document.querySelector("#forecast-strip");
     const forecastSupportAction = document.querySelector("#forecast-support-action");
+    const forecastDuckAccent = document.querySelector("#forecast-duck-accent");
     const forecastTodayOverride = document.querySelector("#forecast-today-override");
     const weeklyReview = document.querySelector("#weekly-review");
     const weeklyReviewContent = document.querySelector("#weekly-review-content");
@@ -4125,6 +4252,7 @@
     const importCounts = document.querySelector("#import-counts");
     const extractionTrace = document.querySelector("#extraction-trace");
     const ocrSegmentsPanel = document.querySelector("#ocr-segments-panel");
+    const dateExtractionTrace = document.querySelector("#date-extraction-trace");
     const testCandidateExtraction = document.querySelector("#test-candidate-extraction");
     const pipelineCounts = document.querySelector("#pipeline-counts");
     const devClearAllData = document.querySelector("#dev-clear-all-data");
@@ -4212,23 +4340,23 @@
     const planetAssets = {
       "Class 1": {
         name: "Earth",
-        src: "assets/planets/ef_planet_assets/earth/earth_512.png"
+        src: "./assets/planets/ef_planet_assets/earth/earth_512.png"
       },
       "Class 2": {
         name: "Jupiter",
-        src: "assets/planets/ef_planet_assets/jupiter/jupiter_512.png"
+        src: "./assets/planets/ef_planet_assets/jupiter/jupiter_512.png"
       },
       "Class 3": {
         name: "Saturn",
-        src: "assets/planets/ef_planet_assets/saturn/saturn_512.png"
+        src: "./assets/planets/ef_planet_assets/saturn/saturn_512.png"
       },
       "Class 4": {
         name: "Mars",
-        src: "assets/planets/ef_planet_assets/mars/mars_512.png"
+        src: "./assets/planets/ef_planet_assets/mars/mars_512.png"
       },
       "Class 5": {
         name: "Neptune",
-        src: "assets/planets/ef_planet_assets/neptune/neptune_512.png"
+        src: "./assets/planets/ef_planet_assets/neptune/neptune_512.png"
       }
     };
 
@@ -4386,6 +4514,11 @@
       if (!item.classId && item.courseId) item.classId = item.courseId;
       if (!item.assignmentTitle && item.name) item.assignmentTitle = item.name;
       if (!item.name && item.assignmentTitle) item.name = item.assignmentTitle;
+      const cleanedTitle = cleanAssignmentDisplayTitle(item.assignmentTitle || item.name || "");
+      if (cleanedTitle) {
+        item.assignmentTitle = cleanedTitle;
+        item.name = cleanedTitle;
+      }
       if (!item.courseName) item.courseName = item.classTitle || courseName(item.subject);
       if (!item.classTitle) item.classTitle = item.courseName;
       if (!item.assignmentType && item.type) item.assignmentType = item.type;
@@ -4478,6 +4611,7 @@
       };
       renderExtractionTrace();
       renderOcrSegmentsPanel([]);
+      renderDateExtractionTrace([]);
       updateAdaptiveCollapseState();
     }
 
@@ -4538,6 +4672,81 @@
           `).join("") : "<p>No OCR segments yet.</p>"}
         </div>
       `;
+    }
+
+    function renderDateExtractionTrace(entries = [], assignments = []) {
+      if (!dateExtractionTrace) return;
+      if (!entries.length) {
+        dateExtractionTrace.innerHTML = `
+          <strong>Date Extraction Trace</strong>
+          <div>No OCR date trace yet.</div>
+        `;
+        return;
+      }
+      const dueLabels = entries.filter(entry => entry.containsDueLabel);
+      const nearbyMatches = dueLabels.flatMap(entry => entry.nearby || []);
+      dateExtractionTrace.innerHTML = `
+        <strong>Date Extraction Trace</strong>
+        <div>OCR lines: ${entries.length}</div>
+        <div>Due label matches: ${dueLabels.length}</div>
+        <div>Nearby date matches: ${nearbyMatches.filter(item => item.containsDate).length}</div>
+        <div>Assigned candidates: ${assignments.length}</div>
+        <div class="review-list">
+          ${entries.map(entry => `
+            <div class="ocr-segment-card">
+              <div><b>Line ${entry.lineNumber}:</b> ${escapeHtml(entry.text || "")}</div>
+              <div>containsDueLabel: ${entry.containsDueLabel ? "true" : "false"}</div>
+              <div>containsDate: ${entry.containsDate ? "true" : "false"}</div>
+              <div>detectedDateValue: ${escapeHtml(entry.detectedDateValue || "")}</div>
+            </div>
+          `).join("")}
+        </div>
+        ${dueLabels.map(entry => `
+          <div class="ocr-segment-card">
+            <strong>Due label line ${entry.lineNumber}</strong>
+            <div>${escapeHtml(entry.text || "")}</div>
+            <div><b>Next 3 lines inspected:</b></div>
+            ${(entry.nearby || []).map(item => `
+              <div>
+                Line ${item.lineNumber}: ${escapeHtml(item.text || "")}
+                <br>containsDate: ${item.containsDate ? "true" : "false"}
+                <br>detectedDateValue: ${escapeHtml(item.detectedDateValue || "")}
+              </div>
+            `).join("") || "<div>No following lines inspected.</div>"}
+            <div>date found near due label: ${(entry.nearby || []).some(item => item.containsDate) ? "yes" : "no"}</div>
+            <div>assigned candidate title: ${escapeHtml(entry.assignedCandidateTitle || "")}</div>
+          </div>
+        `).join("")}
+      `;
+    }
+
+    function buildDateExtractionTrace(lines) {
+      return lines.map((line, index) => {
+        const text = String(line || "").replace(/[|_]+/g, " ").replace(/\s+/g, " ").trim();
+        const detectedDate = findDateInLine(text);
+        const containsDueLabel = isCanvasDueLabel(text) && !isCanvasAvailableFromLabel(text);
+        const nearby = containsDueLabel
+          ? [1, 2, 3].map(offset => {
+              const nextText = String(lines[index + offset] || "").replace(/[|_]+/g, " ").replace(/\s+/g, " ").trim();
+              const nextDate = findDateInLine(nextText);
+              return {
+                lineNumber: index + offset + 1,
+                text: nextText,
+                containsDate: Boolean(nextDate),
+                detectedDateValue: nextDate ? nextDate.toISOString() : ""
+              };
+            }).filter(item => item.text)
+          : [];
+        return {
+          lineNumber: index + 1,
+          text,
+          containsDueLabel,
+          containsDate: Boolean(detectedDate),
+          detectedDateValue: detectedDate ? detectedDate.toISOString() : "",
+          nearby,
+          assignedCandidateTitle: ""
+        };
+      });
     }
 
     function testCandidateExtractionFlow() {
@@ -4814,6 +5023,34 @@
       expandCourseSettings?.focus();
     }
 
+    function planetFallbackLetter(subject) {
+      const asset = planetAssets[normalizeSubject(subject)] || planetAssets["Class 1"];
+      return String(asset?.name || "Planet").charAt(0).toUpperCase();
+    }
+
+    function planetThumbMarkup(subject, className = "legend-planet") {
+      const normalized = normalizeSubject(subject);
+      const planet = planetAssets[normalized] || planetAssets["Class 1"];
+      return `
+        <span class="course-planet-thumb" aria-hidden="true">
+          <img class="${className}" src="${escapeHtml(planet.src)}" alt="" data-planet-fallback>
+          <span class="planet-image-fallback" hidden>${escapeHtml(planetFallbackLetter(normalized))}</span>
+        </span>
+      `;
+    }
+
+    function wirePlanetImageFallbacks(root = document) {
+      root.querySelectorAll("img[data-planet-fallback]").forEach(img => {
+        const fallback = img.nextElementSibling;
+        const showFallback = () => {
+          img.hidden = true;
+          if (fallback) fallback.hidden = false;
+        };
+        img.addEventListener("error", showFallback, { once: true });
+        if (img.complete && img.naturalWidth === 0) showFallback();
+      });
+    }
+
     function renderClassList() {
       updateFirstRunVisibility();
       if (coursesCountDebug) coursesCountDebug.textContent = `Courses Count: ${state.uploadedClasses.length}`;
@@ -4833,9 +5070,10 @@
         const row = document.createElement("div");
         row.className = "class-row";
         row.innerHTML = `
-          <span>${escapeHtml(item.title)} (${item.assignments.length})</span>
+          <span class="course-row-label">${planetThumbMarkup(item.subject, "legend-planet")}<strong>${escapeHtml(item.title)}</strong> <span>(${item.assignments.length})</span></span>
           <button class="remove-course-button" type="button" aria-label="Delete class ${escapeHtml(item.title)}">Delete Class</button>
         `;
+        wirePlanetImageFallbacks(row);
         row.querySelector("button").addEventListener("click", event => requestCourseDelete(item.courseId || item.id, event.currentTarget));
         classList.appendChild(row);
       });
@@ -5620,7 +5858,7 @@
       if (!("Notification" in window) || Notification.permission !== "granted") return;
       if (localStorage.getItem(reminderPushKey) === dateKey()) return;
       const registration = await registerServiceWorker();
-      const body = reminder.message;
+      const body = cleanPromptText(reminder.message);
       const icon = planetNotificationIcon();
       localStorage.setItem(reminderPushKey, dateKey());
       if (registration) {
@@ -6041,7 +6279,7 @@
       const disabled = suggestion.type === "view" && !suggestion.assignmentId;
       return `
         <div class="focus-next-action">
-          <p>${escapeHtml(suggestion.message)}</p>
+          <p>${escapeHtml(cleanPromptText(suggestion.message))}</p>
           <button type="button" data-focus-action="${escapeHtml(suggestion.type)}" data-assignment-id="${escapeHtml(suggestion.assignmentId || "")}" data-step-id="${escapeHtml(suggestion.stepId || "")}" ${disabled ? "disabled" : ""}>
             ${disabled ? "No assignment selected" : escapeHtml(suggestion.action)}
           </button>
@@ -6351,7 +6589,7 @@
       }
       nextActionsList.innerHTML = suggestions.map((suggestion, index) => `
         <div class="next-action-card">
-          <p>${escapeHtml(suggestion.message)}</p>
+          <p>${escapeHtml(cleanPromptText(suggestion.message))}</p>
           <div class="next-action-buttons">
             <button type="button" data-next-action="${escapeHtml(suggestion.type)}" data-assignment-id="${escapeHtml(suggestion.assignmentId || "")}" data-step-id="${escapeHtml(suggestion.stepId || "")}">
               ${escapeHtml(suggestion.action)}
@@ -6442,7 +6680,7 @@
         welcomeBackActions.innerHTML = `
           ${suggestion ? `
             <button type="button" data-welcome-action="${escapeHtml(suggestion.type)}" data-assignment-id="${escapeHtml(suggestion.assignmentId || "")}" data-step-id="${escapeHtml(suggestion.stepId || "")}" data-dismiss-id="${escapeHtml(suggestion.dismissId || "")}">
-              ${escapeHtml(suggestion.action || "View next step")}
+              ${escapeHtml(cleanPromptText(suggestion.action || "View next step"))}
             </button>
           ` : `<button type="button" data-welcome-action="week" data-week="${currentWeek}">Review this week</button>`}
           ${state.reentryModeActive ? `<button class="secondary-action" type="button" data-welcome-action="full-view">Return to Full Semester View</button>` : ""}
@@ -7001,6 +7239,8 @@
       }
       const loads = forecastWindowLoads();
       forecastTrend.textContent = forecastTrendText(loads);
+      const showDuck = true;
+      forecastStrip.closest(".workload-forecast")?.classList.toggle("show-duck-accent", showDuck);
       const maxScore = Math.max(1, ...loads.map(load => load.loadScore));
       const current = currentWeekNumber();
       forecastStrip.innerHTML = loads.map(load => {
@@ -7032,7 +7272,7 @@
           forecastSupportAction.classList.add("is-open");
           forecastSupportAction.innerHTML = `
             <button type="button" data-forecast-action="${escapeHtml(support.action)}" data-assignment-id="${escapeHtml(support.assignmentId || "")}" data-week="${escapeHtml(String(support.week || ""))}">
-              ${escapeHtml(support.message)}
+              ${escapeHtml(cleanPromptText(support.message))}
             </button>
           `;
         }
@@ -7214,7 +7454,7 @@
       gentleReminderBanner.innerHTML = `
         ${showDuck ? astronautDuckSvg() : ""}
         <ul class="reminder-list">
-          ${reminders.map(reminder => `<li>${escapeHtml(reminder.message)}</li>`).join("")}
+          ${reminders.map(reminder => `<li>${escapeHtml(cleanPromptText(reminder.message))}</li>`).join("")}
         </ul>
         <div class="reminder-actions">
           <button id="dismiss-reminders" type="button" aria-label="Dismiss reminders">Dismiss</button>
@@ -8505,8 +8745,8 @@
       legend.innerHTML = "";
       subjectKeys().forEach(subject => {
         const item = document.createElement("span");
-        const planet = planetAssets[subject];
-        item.innerHTML = `<img class="legend-planet" src="${escapeHtml(planet.src)}" alt="">${escapeHtml(courseName(subject))}`;
+        item.innerHTML = `${planetThumbMarkup(subject, "legend-planet")}${escapeHtml(courseName(subject))}`;
+        wirePlanetImageFallbacks(item);
         legend.appendChild(item);
       });
     }
@@ -9560,6 +9800,7 @@
 
     function createFallbackCandidatesFromOcr(ocrText, currentCourse) {
       const lines = ocrLinesFromText(ocrText);
+      const dateTrace = buildDateExtractionTrace(lines);
       const courseId = currentCourse?.courseId || "";
       const courseName = currentCourse?.courseName || currentCourse?.title || "";
       const planetType = currentCourse?.planetType || currentCourse?.planet || "";
@@ -9570,6 +9811,7 @@
       const segmentDiagnostics = [];
       let keywordMatches = 0;
       const candidateLines = splitOcrTextIntoCandidateSegments(lines);
+      console.log("OCR lines array", lines);
       candidateLines.forEach((entry, index) => {
         const cleanedLine = entry.text.replace(/[|_]+/g, " ").replace(/\s+/g, " ").trim();
         const diagnostic = {
@@ -9586,20 +9828,27 @@
           text: cleanedLine
         });
         if (!cleanedLine) return;
-        if (isOcrJunkLine(cleanedLine)) {
+        if (isOcrJunkLine(cleanedLine) || isMeaninglessOcrFragment(cleanedLine)) {
           diagnostic.reason = "junk/browser/policy text";
           rejectedLines.push({ line: cleanedLine, reason: "junk/browser/policy text" });
           return;
         }
         const rawSegmentText = entry.rawText || entry.text || "";
-        const dueDate = findDateInLine(cleanedLine) || findDateInLine(rawSegmentText);
-        const points = findPointsInLine(cleanedLine) ?? findPointsInLine(rawSegmentText);
-        const percent = findPercentInLine(cleanedLine) ?? findPercentInLine(rawSegmentText);
+        const canvasDueDate = findCanvasDueDateNearLine(lines, entry.lineNumber - 1);
+        if (canvasDueDate) {
+          const traceEntry = dateTrace.find(item => item.lineNumber === canvasDueDate.labelLineNumber);
+          if (traceEntry) traceEntry.assignedCandidateTitle = cleanCandidateTitle(cleanedLine) || cleanedLine;
+        }
+        const nearbyDate = canvasDueDate || findNearbyOcrDate(lines, entry.lineNumber - 1);
+        const nearbyValue = findNearbyOcrValue(lines, entry.lineNumber - 1);
+        const dueDate = findDateInLine(cleanedLine) || findDateInLine(rawSegmentText) || nearbyDate?.date || null;
+        const points = findPointsInLine(cleanedLine) ?? findPointsInLine(rawSegmentText) ?? nearbyValue?.points ?? null;
+        const percent = findPercentInLine(cleanedLine) ?? findPercentInLine(rawSegmentText) ?? nearbyValue?.percent ?? null;
         const strongInfo = strongKeywordInfo(cleanedLine, rawSegmentText);
         const strongKeywordFound = strongInfo.found;
         const gradedSignalFound = /graded/i.test(`${cleanedLine} ${rawSegmentText}`);
         const scoreInfo = scoreCandidateSegment(cleanedLine, { dueDate, points, percent, rawText: rawSegmentText, strongInfo, gradedSignalFound });
-        const readingOnlySegment = /\b(read(?:ing)?s?|chapters?|textbook|articles?)\b/i.test(cleanedLine) && !strongKeywordFound;
+        const readingOnlySegment = isReadingOnlyOcrSegment(cleanedLine, rawSegmentText, strongKeywordFound);
         if (strongKeywordFound) {
           scoreInfo.accepted = true;
           scoreInfo.reason = `accepted because: strong graded keyword; ${scoreInfo.reason}`;
@@ -9644,7 +9893,7 @@
           .replace(/\s+/g, " ")
           .trim();
         const titleInfo = cleanOcrAssignmentTitle(titleBeforeCleanup, cleanedLine);
-        const title = titleInfo.title;
+        const title = titleInfo.title || genericCandidateTitleFromSignal(cleanedLine);
         if (!title || title.length < 2) {
           diagnostic.accepted = false;
           diagnostic.reason = "no usable title";
@@ -9660,7 +9909,7 @@
           assignmentTitle: title,
           title,
           dueDate: dueDate ? dueDate.toISOString() : "",
-          rawDueDateText: dateTextFromLine(cleanedLine),
+          rawDueDateText: dateTextFromLine(cleanedLine) || (nearbyDate?.sourceText ? dateTextFromLine(nearbyDate.sourceText) : ""),
           dueDateLabel: dueDate ? formatDate(dueDate) : "",
           pointsOrWeight,
           needsDate: !dueDate,
@@ -9669,14 +9918,16 @@
           needsWeightReview: !pointsOrWeight,
           weightNotListed: !pointsOrWeight,
           needsReview: !dueDate,
-          needsClearerTitle: titleInfo.needsClearerTitle,
+          needsClearerTitle: titleInfo.needsClearerTitle || /^assignment$/i.test(title) || /^task$/i.test(title),
           confidence: dueDate && pointsOrWeight ? "High" : "Low",
           acceptanceReason: `${scoreInfo.reason} (score ${scoreInfo.score})`,
           score: scoreInfo.score,
           source: "ocr-fallback",
           importedViaOcr: true,
           edited: false,
-          sourceText: cleanedLine,
+          sourceText: nearbyValue?.sourceText || nearbyDate?.sourceText
+            ? `${cleanedLine} ${nearbyDate?.sourceText || ""} ${nearbyValue?.sourceText || ""}`.replace(/\s+/g, " ").trim()
+            : cleanedLine,
           lineNumber: entry.lineNumber
         };
         candidates.push(candidate);
@@ -9684,13 +9935,22 @@
         console.log("candidateCards length after push", candidates.length);
         console.log("candidate courseId when created", { title, courseId, courseName, planetType });
       });
+      const cleanedCandidates = consolidateOcrCandidates(candidates);
+      renderDateExtractionTrace(dateTrace, cleanedCandidates.filter(candidate => candidate.dueDate));
+      console.log("due label matches", dateTrace.filter(item => item.containsDueLabel));
+      console.log("nearby date matches", dateTrace.flatMap(item => item.nearby || []).filter(item => item.containsDate));
+      console.log("final dueDate assigned", cleanedCandidates.map(candidate => ({
+        title: candidate.assignmentTitle || candidate.title,
+        dueDate: candidate.dueDate || "",
+        rawDueDateText: candidate.rawDueDateText || ""
+      })));
       updateExtractionTrace({
         ocrTextLength: (ocrText || "").length,
         ocrLinesCount: lines.length,
         extractCalled: true,
         keywordMatches,
-        candidatesReturned: candidates.length,
-        candidateCardsStateCount: candidates.length,
+        candidatesReturned: cleanedCandidates.length,
+        candidateCardsStateCount: cleanedCandidates.length,
         ocrTextSample: (ocrText || "").trim().slice(0, 1500),
         rejectedLines: rejectedLines.slice(0, 80)
         ,segmentScores: segmentScores.slice(0, 80)
@@ -9700,13 +9960,14 @@
         totalOcrLinesProcessed: lines.length,
         logicalCandidateSegmentsProcessed: candidateLines.length,
         totalKeywordMatchesFound: keywordMatches,
-        totalCandidateCardsCreated: candidates.length
+        rawCandidateCardsCreated: candidates.length,
+        totalCandidateCardsCreated: cleanedCandidates.length
       });
-      return candidates;
+      return cleanedCandidates;
     }
 
     function splitOcrTextIntoCandidateSegments(lines) {
-      const splitter = /\b(?=quizzes\b|quiz\b|exam\b|test\b|midterm\b|final\b|paper\b|project\b|presentation\b|assignment\s+due\b|assignment\b|homework\b|lab\s+report\b|lab\b|discussion\s+post\b|discussion\b)/gi;
+      const splitter = /\b(?=quizzes\b|quiz\b|exam\b|test\b|midterm\b|final\b|paper\b|project\b|presentation\b|assignment\s+due\b|assignment\b|homework\b|lab\s+report\b|lab\b|discussion\s+post\b|discussion\b|due\b|points?\b|pts?\.?\b|grades?\b|graded\b|worth\b)/gi;
       const segments = [];
       lines.forEach((line, lineIndex) => {
         const cleaned = String(line || "").replace(/[|_]+/g, " ").replace(/\s+/g, " ").trim();
@@ -9748,20 +10009,20 @@
         score += 4;
         reasons.push("+4 major deliverable");
       }
-      const regularMatch = text.match(/\b(?:assignment|homework|discussion)\b[^/|;,\n]*/i);
+      const regularMatch = combinedText.match(/\b(?:assignment|homework|discussion|lab)\b[^/|;,\n]*/i);
       if (regularMatch) {
         score += 3;
-        reasons.push("+3 assignment/homework/discussion");
+        reasons.push("+3 assignment/homework/discussion/lab");
       }
-      if (/\bdue\b/i.test(text)) {
+      if (/\bdue\b/i.test(combinedText)) {
         score += 2;
         reasons.push("+2 due");
       }
-      if (details.dueDate || findDateInLine(text)) {
+      if (details.dueDate || findDateInLine(combinedText)) {
         score += 2;
         reasons.push("+2 date");
       }
-      if (details.points !== null || details.percent !== null || /\b(points?|pts?\.?|worth|graded)\b|%/i.test(text)) {
+      if (details.points !== null || details.percent !== null || /\b(points?|pts?\.?|worth|graded|grades?|score)\b|%/i.test(combinedText)) {
         score += 2;
         reasons.push("+2 points/weight");
       }
@@ -9780,15 +10041,30 @@
       }
 
       const strongDeliverableMatch = quizExamMatch || majorMatch;
-      const readingOnly = hasReading && !strongDeliverableMatch && !regularMatch && !(details.points !== null || details.percent !== null);
-      const accepted = Boolean(strongDeliverableMatch) || (!readingOnly && score >= 4);
+      const permissiveSignal = hasCandidateOcrSignal(combinedText);
+      const readingOnly = isReadingOnlyOcrSegment(text, rawText, Boolean(strongDeliverableMatch || regularMatch));
+      const accepted = Boolean(strongDeliverableMatch || regularMatch) || (!readingOnly && permissiveSignal);
       const titleSource = strongDeliverableMatch?.[0] || regularMatch?.[0] || text;
       const title = cleanCandidateTitle(titleSource);
       const reason = accepted
-        ? `accepted because: ${strongDeliverableMatch ? "strong graded keyword" : "score threshold"}; ${reasons.join(", ") || "no scoring signals"}`
+        ? `accepted because: ${strongDeliverableMatch || regularMatch ? "task or graded keyword" : "permissive signal"}; ${reasons.join(", ") || "OCR signal"}`
         : `rejected: ${readingOnly ? "reading-only" : "score below threshold"}; ${reasons.join(", ") || "no scoring signals"}`;
       console.log("candidate scoring", { segment: text, score, accepted, reason, title });
       return { accepted, score, reason, title };
+    }
+
+    function hasCandidateOcrSignal(text = "") {
+      return /\b(?:quiz(?:zes)?|exam|test|midterm|final|paper|project|presentation|assignment|homework|lab|discussion|due|points?|pts?\.?|grades?|graded|worth|score)\b|%/i.test(String(text || ""));
+    }
+
+    function isReadingOnlyOcrSegment(text = "", rawText = "", hasTaskSignal = false) {
+      const combined = `${text || ""} ${rawText || ""}`;
+      const hasReading = /\b(read(?:ing)?s?|chapters?|textbook|articles?)\b/i.test(combined);
+      if (!hasReading) return false;
+      const hasTaskOrGradeDateSignal = hasTaskSignal ||
+        /\b(?:quiz(?:zes)?|exam|test|midterm|final|paper|project|presentation|assignment|homework|lab|discussion|due|points?|pts?\.?|grades?|graded|worth|score)\b|%/i.test(combined) ||
+        Boolean(findDateInLine(combined));
+      return !hasTaskOrGradeDateSignal;
     }
 
     function strongKeywordInfo(normalizedText = "", rawText = "") {
@@ -9833,6 +10109,24 @@
         .replace(/^[\\/:;,\-\s]+|[\\/:;,\-\s]+$/g, "")
         .replace(/\s+/g, " ")
         .trim();
+    }
+
+    function genericCandidateTitleFromSignal(text = "") {
+      const source = String(text || "");
+      if (/quiz(?:zes)?/i.test(source)) return "Quiz";
+      if (/exam/i.test(source)) return "Exam";
+      if (/test/i.test(source)) return "Test";
+      if (/midterm/i.test(source)) return "Midterm";
+      if (/final/i.test(source)) return "Final";
+      if (/paper/i.test(source)) return "Paper";
+      if (/project/i.test(source)) return "Project";
+      if (/presentation/i.test(source)) return "Presentation";
+      if (/homework/i.test(source)) return "Homework";
+      if (/lab/i.test(source)) return "Lab";
+      if (/discussion/i.test(source)) return "Discussion";
+      if (/assignment/i.test(source)) return "Assignment";
+      if (hasCandidateOcrSignal(source)) return "Assignment";
+      return "";
     }
 
     function renderFallbackCandidatesFromOcrText(ocrText, currentCourse = quickCaptureCourseInfo()) {
@@ -9913,6 +10207,72 @@
       return null;
     }
 
+    function isCanvasDueLabel(text = "") {
+      return /\b(?:due|due\s+date|due\s+by|available\s+until|until)\b/i.test(String(text || ""));
+    }
+
+    function isCanvasAvailableFromLabel(text = "") {
+      return /\bavailable\s+from\b/i.test(String(text || ""));
+    }
+
+    function findCanvasDueDateNearLine(lines, index) {
+      const start = Math.max(0, index - 3);
+      const end = Math.min(lines.length - 1, index + 3);
+      const dueMatches = [];
+      const untilMatches = [];
+      for (let i = start; i <= end; i += 1) {
+        const labelLine = String(lines[i] || "").replace(/[|_]+/g, " ").replace(/\s+/g, " ").trim();
+        if (!labelLine || isCanvasAvailableFromLabel(labelLine) || !isCanvasDueLabel(labelLine)) continue;
+        console.log("due label found", { labelLine, labelLineNumber: i + 1, assignmentLineNumber: index + 1 });
+        for (let j = i + 1; j <= Math.min(lines.length - 1, i + 3); j += 1) {
+          const dateLine = String(lines[j] || "").replace(/[|_]+/g, " ").replace(/\s+/g, " ").trim();
+          const date = findDateInLine(dateLine);
+          if (!date) continue;
+          const match = {
+            date,
+            sourceText: `${labelLine} ${dateLine}`.trim(),
+            offset: j - index,
+            label: labelLine,
+            labelLineNumber: i + 1,
+            dateLineNumber: j + 1
+          };
+          console.log("date found near due label", match);
+          if (/\bdue\b/i.test(labelLine)) dueMatches.push(match);
+          else untilMatches.push(match);
+          break;
+        }
+      }
+      const selected = dueMatches[0] || untilMatches[0] || null;
+      if (selected) {
+        console.log("assigned due date to candidate", {
+          assignmentLineNumber: index + 1,
+          dueDate: selected.date.toISOString(),
+          sourceText: selected.sourceText
+        });
+      }
+      return selected;
+    }
+
+    function findNearbyOcrValue(lines, index) {
+      const offsets = [-2, -1, 1, 2];
+      for (const offset of offsets) {
+        const nearbyLine = lines[index + offset];
+        if (!nearbyLine) continue;
+        const normalized = nearbyLine.replace(/[|_]+/g, " ").replace(/\s+/g, " ").trim();
+        const points = findPointsInLine(normalized);
+        const percent = findPercentInLine(normalized);
+        if (points !== null || percent !== null) {
+          console.log("nearby OCR value found", {
+            assignmentLine: lines[index],
+            valueLine: normalized,
+            offset
+          });
+          return { points, percent, sourceText: normalized, offset };
+        }
+      }
+      return null;
+    }
+
     function titleFromTableOcrLine(line) {
       const cleaned = line
         .replace(/\b(?:\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.?\s+\d{1,2}(?:st|nd|rd|th)?)\b/gi, " ")
@@ -9935,7 +10295,7 @@
         .replace(/([a-z])([A-Z])/g, "$1 $2")
         .replace(/\b(Quiz|Exam|Test|Paper|Project|Presentation)\s*Type\b/gi, "$1")
         .replace(/\bGraded\s*(Quiz|Exam|Test|Paper|Project|Presentation)\b/gi, "$1")
-        .replace(/\b(Type|Graded|EB|Points?|Available|Due|Submit|Attempts?|Score|Status)\b/gi, " ")
+        .replace(/\b(Type|Graded|EB|Points?|Available|From|Until|Due|Submit|Attempts?|Score|Status)\b/gi, " ")
         .replace(/\b(?:Quiz)\s+(?:Type|Graded|EB)\b/gi, "Quiz")
         .replace(/\b(?:Exam)\s+(?:Type|Graded|EB)\b/gi, "Exam")
         .replace(/\b(?:Test)\s+(?:Type|Graded|EB)\b/gi, "Test")
@@ -9948,12 +10308,168 @@
         .replace(/\bEB\b/gi, " ")
         .replace(/\s+/g, " ")
         .trim();
+      cleaned = collapseRepeatedTitlePhrase(cleaned);
       console.log("OCR title cleanup", { rawTitle, cleanedTitle: cleaned });
       const needsClearerTitle = /^(quiz|exam|test|paper|project|presentation|lab report)$/i.test(cleaned);
       return {
         title: cleaned,
         needsClearerTitle
       };
+    }
+
+    function collapseRepeatedTitlePhrase(title = "") {
+      let cleaned = String(title || "").replace(/\s+/g, " ").trim();
+      if (!cleaned) return "";
+      const original = cleaned;
+      const commaParts = cleaned.split(/\s*,\s*/).map(part => part.trim()).filter(Boolean);
+      if (commaParts.length > 1) {
+        const firstNormalized = normalizeTitleForDuplicateCheck(commaParts[0]);
+        if (firstNormalized && commaParts.every(part => normalizeTitleForDuplicateCheck(part) === firstNormalized)) {
+          cleaned = commaParts[0];
+        }
+      }
+      const words = cleaned.split(" ");
+      let changed = true;
+      while (changed) {
+        changed = false;
+        for (let size = Math.floor(words.length / 2); size >= 1; size -= 1) {
+          for (let start = 0; start + size * 2 <= words.length; start += 1) {
+            const first = normalizeTitleForDuplicateCheck(words.slice(start, start + size).join(" "));
+            const second = normalizeTitleForDuplicateCheck(words.slice(start + size, start + size * 2).join(" "));
+            if (first && first === second) {
+              words.splice(start + size, size);
+              changed = true;
+              break;
+            }
+          }
+          if (changed) break;
+        }
+      }
+      cleaned = words.join(" ").replace(/\b(.+?)\s*[,;:/|-]?\s+\1\b/gi, "$1").replace(/\s+/g, " ").trim();
+      if (normalizeTitleForDuplicateCheck(original) !== normalizeTitleForDuplicateCheck(cleaned)) {
+        console.log("duplicate title cleanup", { originalTitle: original, cleanedTitle: cleaned });
+      }
+      return cleaned;
+    }
+
+    function normalizeTitleForDuplicateCheck(value = "") {
+      return String(value || "")
+        .toLowerCase()
+        .replace(/[^\p{L}\p{N}]+/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function cleanAssignmentDisplayTitle(title = "") {
+      return collapseRepeatedTitlePhrase(String(title || "").replace(/\s+/g, " ").trim());
+    }
+
+    function cleanPromptText(text = "") {
+      return collapseRepeatedTitlePhrase(String(text || "").replace(/\s+/g, " ").trim());
+    }
+
+    function isMeaninglessOcrFragment(text = "") {
+      const cleaned = String(text || "")
+        .replace(/[^\w\s%.-]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (!cleaned) return true;
+      if (/^(?:due|due date|due by|available from|available until|until)$/i.test(cleaned)) return true;
+      if (hasCandidateOcrSignal(cleaned) || findDateInLine(cleaned) || findPointsInLine(cleaned) !== null || findPercentInLine(cleaned) !== null) return false;
+      const words = cleaned.toLowerCase().split(/\s+/).filter(Boolean);
+      const filler = new Set(["for", "from", "until", "available", "to", "of", "the", "a", "an", "and", "or", "on", "in"]);
+      return words.length <= 3 && words.every(word => filler.has(word));
+    }
+
+    function candidateHasTaskWord(candidate) {
+      return /\b(?:quiz(?:zes)?|exam|test|midterm|final|paper|project|presentation|assignment|homework|lab|discussion)\b/i.test(
+        `${candidate.assignmentTitle || candidate.title || ""} ${candidate.sourceText || ""}`
+      );
+    }
+
+    function candidateDataScore(candidate) {
+      return Number(candidate.score || 0) +
+        (candidateHasTaskWord(candidate) ? 8 : 0) +
+        (candidate.dueDate ? 4 : 0) +
+        (candidate.pointsOrWeight ? 4 : 0) -
+        (candidate.needsClearerTitle ? 1 : 0);
+    }
+
+    function mergeCandidateData(target, source) {
+      if (!target.dueDate && source.dueDate) {
+        target.dueDate = source.dueDate;
+        target.rawDueDateText = source.rawDueDateText || target.rawDueDateText;
+        target.dueDateLabel = source.dueDateLabel || target.dueDateLabel;
+        target.needsDate = false;
+        target.needsDueDate = false;
+      }
+      if (!target.pointsOrWeight && source.pointsOrWeight) {
+        target.pointsOrWeight = source.pointsOrWeight;
+        target.needsWeight = false;
+        target.needsWeightReview = false;
+        target.weightNotListed = false;
+      }
+      target.score = Math.max(Number(target.score || 0), Number(source.score || 0));
+      target.sourceText = `${target.sourceText || ""} ${source.sourceText || ""}`.replace(/\s+/g, " ").trim();
+      target.confidence = target.dueDate && target.pointsOrWeight ? "High" : (target.dueDate || target.pointsOrWeight ? "Medium" : "Low");
+      target.needsReview = Boolean(target.needsDueDate || target.needsDate || target.needsWeightReview || target.needsWeight || target.needsClearerTitle);
+      return target;
+    }
+
+    function dedupeOcrCandidates(candidates) {
+      const byKey = new Map();
+      candidates.forEach(candidate => {
+        const titleKey = String(candidate.assignmentTitle || candidate.title || "")
+          .toLowerCase()
+          .replace(/\b(?:needs|date|weight|listed)\b/g, "")
+          .replace(/[^a-z0-9]+/g, " ")
+          .trim();
+        const key = `${titleKey || candidate.id}|${candidate.dueDate || candidate.rawDueDateText || ""}`;
+        const existing = byKey.get(key);
+        if (!existing || candidateDataScore(candidate) > candidateDataScore(existing)) {
+          byKey.set(key, existing ? mergeCandidateData({ ...candidate }, existing) : candidate);
+        } else if (existing) {
+          mergeCandidateData(existing, candidate);
+        }
+      });
+      return [...byKey.values()];
+    }
+
+    function consolidateOcrCandidates(candidates) {
+      const ordered = [...candidates].sort((a, b) => Number(a.lineNumber || 0) - Number(b.lineNumber || 0));
+      const primary = [];
+      ordered.forEach(candidate => {
+        const title = String(candidate.assignmentTitle || candidate.title || "").trim();
+        const generic = /^(assignment|task)$/i.test(title) || !candidateHasTaskWord(candidate);
+        if (isMeaninglessOcrFragment(title)) return;
+        if (generic && (candidate.dueDate || candidate.pointsOrWeight)) {
+          const neighbor = [...primary].reverse().find(item =>
+            candidateHasTaskWord(item) && Math.abs(Number(item.lineNumber || 0) - Number(candidate.lineNumber || 0)) <= 3
+          );
+          if (neighbor) {
+            mergeCandidateData(neighbor, candidate);
+            return;
+          }
+        }
+        if (candidate.dueDate && !candidateHasTaskWord(candidate)) {
+          const neighbor = [...primary].reverse().find(item =>
+            candidateHasTaskWord(item) && !item.dueDate && Math.abs(Number(item.lineNumber || 0) - Number(candidate.lineNumber || 0)) <= 4
+          );
+          if (neighbor) {
+            mergeCandidateData(neighbor, candidate);
+            console.log("assigned due date to candidate", {
+              title: neighbor.assignmentTitle || neighbor.title,
+              dueDate: neighbor.dueDate,
+              sourceText: candidate.sourceText
+            });
+            return;
+          }
+        }
+        primary.push(candidate);
+      });
+      return dedupeOcrCandidates(primary)
+        .sort((a, b) => candidateDataScore(b) - candidateDataScore(a) || Number(a.lineNumber || 0) - Number(b.lineNumber || 0))
+        .slice(0, 12);
     }
 
     function isOcrJunkLine(line) {
@@ -10014,7 +10530,7 @@
       const dueValue = candidate.dueDate ? dateInputValue(new Date(candidate.dueDate)) : "";
       const weightValue = candidate.pointsOrWeight || "";
       const reviewFlags = [
-        candidate.needsClearerTitle ? "Needs clearer title" : "",
+        candidate.needsClearerTitle ? "Needs Title Review" : "",
         (candidate.needsDueDate || candidate.needsDate) ? "Needs date" : "",
         (candidate.needsWeightReview || candidate.needsWeight || candidate.weightNotListed) ? "Weight not listed" : ""
       ].filter(Boolean).join(" | ");
@@ -10163,7 +10679,7 @@
       const hasDueDate = dueInfo.isValidDate;
       const parsedWeight = weightFromManualInput(candidate.pointsOrWeight || "");
       const hasWeight = Boolean(parsedWeight.weightLabel || Number(parsedWeight.weight));
-      const title = candidate.assignmentTitle || candidate.title || "";
+      const title = cleanAssignmentDisplayTitle(candidate.assignmentTitle || candidate.title || "");
       console.log("candidate courseId at Add", candidate.courseId || candidate.currentCourseId || "");
       console.log("fallback currentCourse at Add", courseInfo);
       console.log("final courseId used for approved assignment", courseId);
@@ -10238,8 +10754,8 @@
         classTitle: courseName,
         subject,
         planetType: planetAssets[subject].name,
-        assignmentTitle: candidate.assignmentTitle || candidate.title || "",
-        name: candidate.assignmentTitle || candidate.title || "",
+        assignmentTitle: cleanAssignmentDisplayTitle(candidate.assignmentTitle || candidate.title || ""),
+        name: cleanAssignmentDisplayTitle(candidate.assignmentTitle || candidate.title || ""),
         dueDate: candidate.dueDate || "",
         pointsOrWeight: candidate.pointsOrWeight || "",
         pointsOrPercent: candidate.pointsOrWeight || "",
@@ -10450,7 +10966,7 @@
       const typeInput = document.querySelector("#candidate-edit-type");
       const selectedCourseId = courseInput?.value || "";
       const selectedCourse = state.uploadedClasses.find(course => (course.courseId || course.id) === selectedCourseId);
-      candidate.assignmentTitle = titleInput?.value.trim() || candidate.assignmentTitle || "Untitled assignment";
+      candidate.assignmentTitle = cleanAssignmentDisplayTitle(titleInput?.value.trim() || candidate.assignmentTitle || "Untitled assignment");
       candidate.title = candidate.assignmentTitle;
       if (selectedCourse) {
         candidate.courseId = selectedCourse.courseId || selectedCourse.id;
@@ -12152,6 +12668,10 @@
     }
 
     syllabusFile.addEventListener("change", updateSelectedSyllabusFile);
+    forecastDuckAccent?.addEventListener("error", () => {
+      forecastDuckAccent.hidden = true;
+      forecastDuckAccent.closest(".workload-forecast")?.classList.remove("show-duck-accent");
+    });
     removeCaptureImage.addEventListener("click", resetQuickCaptureImage);
     addCourseForm.addEventListener("submit", handleAddCourseSubmit);
     addCourseButton.addEventListener("click", handleAddCourseSubmit);
